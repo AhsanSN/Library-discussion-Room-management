@@ -1,0 +1,61 @@
+Week 1:
+	- Building a digital prototype. 
+		- Website's frontend will be created where it will be shown what the final product will look like. 
+	- Website pages include:
+		- Login Screen
+		- Dashboard where the admin can view the following:
+			- Number of rooms booked
+			- Number of free rooms
+			- Total number of bookings
+			- Details of expired rooms
+			- Book a room
+			- Free a booked room
+			- Free an expired room
+			- Entend time period for a booked room
+		- Book room panel
+		- Booking History
+		- 1 page view for students to see their booking details while in discussion room
+			- Shows student id
+			- time room booked
+			- time room expires
+			- Time to expire
+			- see their past booking history
+	- Note that this digital prototype will be static with no functionilities. functionilities will be inplemented in the weeks after
+
+Week 2:
+	- Login working with admin credentials
+	- Book room panel
+	- Dashboard where the admin can view the following: (all implemented)
+		- Number of rooms booked
+		- Number of free rooms
+		- Total number of bookings
+		- Details of expired rooms
+		- Book a room
+		- Free a booked room
+		- Free an expired room
+		- Entend time period for a booked room
+	- Booking History
+	- Deploying the backend database
+	- All written above will be in perfect working condition.
+
+Week 3:
+	- 1 page view for students to see their booking details while in discussion room
+			- Shows student id
+			- time room booked
+			- time room expires
+			- Time to expire
+			- see their past booking history
+	- An email mechanism that will send an email to the person 10 mins before the booking will expire
+	- Another email that will be sent after the room has expired
+	- All written above will be in perfect working condition.
+	
+Week 4:
+	- Push notification mechanism that a student can opt for after visiting the detail page and clicking the "keep me informed" button.
+	- An notification mechanism that will send an notification on the student's device 10 mins before the booking will expire
+	- Another notification that will be sent after the room has expired
+	- Deployment on Anomoz servers
+		- User can choose to deploy on Habib University's server or deploy it on Anomoz server
+	- All written above will be in perfect working condition.
+
+
+

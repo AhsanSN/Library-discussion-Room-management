@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Material Dashboard by Creative Tim
+    Library
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -26,9 +26,8 @@
         Tip 2: you can also add an image using data-image tag
     -->
       <div class="logo">
-        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
-          Creative Tim
-        </a>
+        <a href="http://www.anomoz.com" class="simple-text logo-normal">
+Library        </a>
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
@@ -168,13 +167,13 @@
                         </li>
                         <li class="nav-item">
                           <a class="nav-link" href="#messages" data-toggle="tab">
-                            Free
+                            Booked
                             <div class="ripple-container"></div>
                           </a>
                         </li>
                         <li class="nav-item">
                           <a class="nav-link" href="#settings" data-toggle="tab">
-                            Near Expire
+                            Free
                             <div class="ripple-container"></div>
                           </a>
                         </li>
@@ -187,48 +186,36 @@
                     <div class="tab-pane active" id="profile">
                       <table class="table">
                         <tbody>
-                          <tr>
-                            <td>
-                              <div class="form-check">
-                                <label class="form-check-label">
-                                  ---
+                            <tr>
+                                    <td>
+                                    <label id="expTime'.$row['room'].'" class="form-check-label" >
+                                  3 Hrs ago
                                 </label>
-                              </div>
-                            </td>
-                            <td>Room 202</td>
-                            
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="form-check">
-                                <label class="form-check-label">
-                                  ---
+                                    </td>
+                                    <td>Room 202</td>
+                                    <td><a href="#'"><button class="btn btn-primary btn-sm">Extend<div class="ripple-container"></div></button></a></td>
+                                    <td><a href="#"><button class="btn btn-danger btn-sm">free room!<div class="ripple-container"></div></button></a></td>
+                            </tr>
+                            <tr>
+                                    <td>
+                                    <label id="expTime'.$row['room'].'" class="form-check-label" >
+                                   2 Hrs ago
                                 </label>
-                              </div>
-                            </td>
-                            <td>Room 202</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="form-check">
-                                <label class="form-check-label">
-                                  ---
+                                    </td>
+                                    <td>Room 203</td>
+                                    <td><a href="#'"><button class="btn btn-primary btn-sm">Extend<div class="ripple-container"></div></button></a></td>
+                                    <td><a href="#"><button class="btn btn-danger btn-sm">free room!<div class="ripple-container"></div></button></a></td>
+                            </tr>
+                            <tr>
+                                    <td>
+                                    <label id="expTime'.$row['room'].'" class="form-check-label" >
+                                  2 min ago
                                 </label>
-                              </div>
-                            </td>
-                            <td>Room 202</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="form-check">
-                                <label class="form-check-label">
-                                  
-                                </label>
-                              </div>
-                            </td>
-                            <td><b>Shows list of current booked rooms<b></td>
-                            
-                          </tr>
+                                    </td>
+                                    <td>Room 205</td>
+                                    <td><a href="#'"><button class="btn btn-primary btn-sm">Extend<div class="ripple-container"></div></button></a></td>
+                                    <td><a href="#"><button class="btn btn-danger btn-sm">free room!<div class="ripple-container"></div></button></a></td>
+                            </tr>
                         </tbody>
                       </table>
                     </div>
@@ -236,47 +223,15 @@
                       <table class="table">
                         <tbody>
                           <tr>
-                            <td>
-                              <div class="form-check">
-                                <label class="form-check-label">
-                                  ---
+                                    <td>
+                                    <label id="expTime'.$row['room'].'" class="form-check-label" >
+                                  3 Hrs left
                                 </label>
-                              </div>
-                            </td>
-                            <td>Room 202</td>
-                            
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="form-check">
-                                <label class="form-check-label">
-                                  ---
-                                </label>
-                              </div>
-                            </td>
-                            <td>Room 202</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="form-check">
-                                <label class="form-check-label">
-                                  ---
-                                </label>
-                              </div>
-                            </td>
-                            <td>Room 202</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="form-check">
-                                <label class="form-check-label">
-                                  
-                                </label>
-                              </div>
-                            </td>
-                            <td><b>Shows list of current booked rooms<b></td>
-                            
-                          </tr>
+                                    </td>
+                                    <td>Room 202</td>
+                                    
+                                    <td><a href="#"><button class="btn btn-danger btn-sm">free room!<div class="ripple-container"></div></button></a></td>
+                            </tr>
                         </tbody>
                       </table>
                     </div>
@@ -359,41 +314,7 @@
           </div>
         </div>
       </div>
-      <footer class="footer">
-        <div class="container-fluid">
-          <nav class="float-left">
-            <ul>
-              <li>
-                <a href="https://www.creative-tim.com">
-                  Creative Tim
-                </a>
-              </li>
-              <li>
-                <a href="https://creative-tim.com/presentation">
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a href="http://blog.creative-tim.com">
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a href="https://www.creative-tim.com/license">
-                  Licenses
-                </a>
-              </li>
-            </ul>
-          </nav>
-          <div class="copyright float-right">
-            &copy;
-            <script>
-              document.write(new Date().getFullYear())
-            </script>, made with <i class="material-icons">favorite</i> by
-            <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a> for a better web.
-          </div>
-        </div>
-      </footer>
+ 
     </div>
   </div>
   
