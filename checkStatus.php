@@ -195,6 +195,7 @@ $result = $con->query($query);
       </div>
       <form action="" id="tokenForm" method="post" style="display:none;">
           <input id="tokenValue" name="token">
+          <input id="studentId" name="studentId">
       </form>
       
    <?php include("./phpParts/footer.php")?>
@@ -252,12 +253,17 @@ $result = $con->query($query);
        console.log("show buttton");
    }
 
+
+document.getElementById("studentId").value = "<?echo $studentId?>";
+
+
 </script>
 </body>
 <?
 //enter token
 if(isset($_POST["token"])){
  $token= $_POST["token"];
+ $studentId= $_POST["studentId"];
  ?>
  <script>
     document.getElementById("notfSuccess").style.display='block';

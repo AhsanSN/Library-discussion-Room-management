@@ -34,6 +34,59 @@ else{
         
 }}
 
+$query_editOptions = "select 
+    * from lib_editOptions"; 
+    $result_makingRoomsExpire = $con->query($query_editOptions);
+    
+
+?>
+<script>
+    var students_id_lst = [];
+    var students_name_lst = [];
+
+    var flagged_students_lst = [];
+    var flagged_students_lst_reason = [];
+    var flagged_students_lst_timePlaced = [];
+</script>
+<?
+
+$query = "SELECT `id`, `studentId`, `reason`, `timePlaced` FROM `lib_flags` order by id desc
+"; 
+$result = $con->query($query); 
+$i = 0;
+if ($result->num_rows > 0)
+{ 
+    while($row = $result->fetch_assoc()) 
+    { 
+        ?>
+        <script>
+            flagged_students_lst[<?echo $i?>] = "<?echo $row['studentId']?>"
+            flagged_students_lst_reason[<?echo $i?>] = "<?echo $row['reason']?>"
+            flagged_students_lst_timePlaced[<?echo $i?>] = "<?echo date('d-m-Y H:i', $row['timePlaced'])?>"
+        </script>
+        <?
+        $i +=1;
+    }
+}
+
+$query = "SELECT * from lib_students order by id desc
+"; 
+$result = $con->query($query); 
+$i = 0;
+if ($result->num_rows > 0)
+{ 
+    while($row = $result->fetch_assoc()) 
+    { 
+        ?>
+        <script>
+            students_id_lst[<?echo $i?>] = "<?echo $row['cardnumber']?>"
+            students_name_lst[<?echo $i?>] = "<?echo $row['firstname']." ".$row['surname']?>"
+        </script>
+        <?
+        $i +=1;
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -101,24 +154,6 @@ else{
             <span class="navbar-toggler-icon icon-bar"></span>
             <span class="navbar-toggler-icon icon-bar"></span>
           </button>
-          <div class="collapse navbar-collapse justify-content-end">
-           
-            <ul class="navbar-nav">
-            
-              
-              <li class="nav-item dropdown">
-                <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="material-icons">person</i>
-                  <p class="d-lg-none d-md-block">
-                    Account
-                  </p>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                  <a class="dropdown-item" href="#">Log out</a>
-                </div>
-              </li>
-            </ul>
-          </div>
         </div>
       </nav>
       <!-- End Navbar -->
@@ -138,7 +173,11 @@ else{
                      <div class="form-row">
                         <div class="form-group col-md-6">
                           <label for="inputEmail4">Student ID</label>
-                          <input name="studentId" id="studentIdBox" type="text" class="form-control" placeholder="" required>
+                          <input name="studentId" id="studentIdBox" type="text" onkeyup="showFlaggedStudents()"  class="form-control" placeholder="" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="inputEmail4">Student Name:</label>
+                        <input id="studentNameBox" value="" name="studentName" type="text" class="form-control" placeholder="" style="padding:9px;" required readonly>
                         </div>
                         </div>
                         <div class="form-row">
@@ -146,19 +185,28 @@ else{
                           <label for="inputEmail4">Reason</label>
                             <select name="reason" class="form-control selectpicker" data-style="btn btn-link">
                               <option value="noReasonSpecified">-- Specify reason --</option>
-                              <option value="Left too late">Left too late</option>
-                              <option value="Watching movie">Watching movie</option>
-                              <option value="Locked the unattended room">Locked the unattended room</option>
-                              <option value="Misbehaved">Misbehaved</option>
-                              <option value="Eating in the room">Eating in the room</option>
-                              <option value="Too little students in the room">Too little students in the room</option>
-                              <option value="Too much noise">Too much noise</option>
+                              
+                              <?
+                              if ($result_makingRoomsExpire->num_rows > 0)
+                                { 
+                                    while($row = $result_makingRoomsExpire->fetch_assoc()) 
+                                    { 
+                                        $bookingId = $row['comment'];
+                                        echo '<option value="'.$bookingId.'">'.$bookingId.'</option>';
+
+                                    }
+                                }
+                              
+                              ?>
                             </select>
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-primary">Flag</button>
+                      <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Flag</button>
                     </form>
                   </div>
+                  <div style="display:none" class="alert alert-warning" role="alert" id="flaggedStudentsBox">
+                          Flag on Student! Reason:
+                        </div>
                 </div>
               </div>
             </div>
@@ -181,5 +229,63 @@ if(isset($_GET["studentId"])){
     <?
 }
 ?>
+
+<script>
+     var count = 0;
+         function showFlaggedStudents(){
+            var search = document.getElementById("studentIdBox").value;
+            if (search!= '')
+            {
+                var $myList = $('#flaggedStudentsBox');
+                document.getElementById("flaggedStudentsBox").innerHTML = "Flag on Student! Reason:<hr>";
+                document.getElementById("flaggedStudentsBox").style.display = "block";
+                for (var i = 0; i < flagged_students_lst.length; i++) {
+                    if(flagged_students_lst[i].indexOf(search.toLowerCase()) != -1)
+                    {
+                        //console.log("flagged_students_lst_reason[i]", flagged_students_lst_timePlaced[i]);
+                        var $deleteLink = $("<span>"+((flagged_students_lst_timePlaced[i])).substr(0,21)+": "+flagged_students_lst_reason[i]+"</span>");
+                        $myList.append($deleteLink);
+                    }
+                }
+                if(document.getElementById("flaggedStudentsBox").innerHTML == "Flag on Student! Reason:<hr>"){
+                    document.getElementById("flaggedStudentsBox").innerHTML = " ";
+                    document.getElementById("flaggedStudentsBox").style.display = "none";
+                }
+                //show studentname
+                count = 0;
+                var countI = 0;
+                //search = Number(search)
+                for (var i = 0; i < students_id_lst.length; i++) {
+                    if(students_id_lst[i].indexOf(search) != -1)
+                    {
+                        //console.log("students_id_lst[i]", students_id_lst[i], students_name_lst[i]);
+                        count +=1;
+                        countI=i;
+                    }
+                }
+                if(count==1){
+                    document.getElementById("studentNameBox").value = (students_name_lst[countI]).toString();
+                    document.getElementById("submitBtn").disabled = false;
+                    
+                }
+                if(count!=1){
+                    document.getElementById("studentNameBox").value = "";
+                    document.getElementById("submitBtn").disabled = true;
+
+                }
+                
+            }
+            if (search== '')
+            {
+                document.getElementById("flaggedStudentsBox").innerHTML = " ";
+                document.getElementById("flaggedStudentsBox").style.display = "none";
+                document.getElementById("studentNameBox").value = "";
+                document.getElementById("submitBtn").disabled = true;
+            }
+            
+        }
+
+
+     </script>
 
 </html>

@@ -12,14 +12,22 @@ else{
 }
 // Server key from Firebase Console
 
+?>
+    <script>console.log("hereksajdkjasbdkjabsdjkbjkasdbjkbaskjdbkdb" )</script>
+    <?
+    //echo "<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>";
 if($single==false){
+    
     for($i=0;$i<count($token);$i++){
+        ?>
+    <script>console.log("yes" )</script>
+    <?
         define( 'API_ACCESS_KEY', 'AAAAUjJH48c:APA91bEatEWDjhZvtoi_4KaPoyutmCXq4L4gW4WyAnWRstfY0-ylcNSgAe0M75j3Edy4JZAfT9auEWRAJWll2ZqckW2IRFgEX-xrm8gdorWV3n21rcmvMVQzy9zO3HOiJd3sc0kBCmlN' );
 
         $data = array("to" => $token[$i],
-                      "notification" => array( "title" => "HU - Library", "body" => $notfBody ,"icon" => "../profiles/p1.jpg", "click_action" => "https://library.anomoz.com/checkStatus.php?room=".$room));                                                                    
+                      "notification" => array( "title" => "HU - Library", "body" => $notfBody ,"icon" => "../p1.jpg", "click_action" => "https://library.anomoz.com/checkStatus.php?room=".$room));                                                                    
         $data_string = json_encode($data); 
-        echo "The Json Data : ".$data_string; 
+        //echo "The Json Data : ".$data_string; 
         $headers = array
         (
              'Authorization: key=' . API_ACCESS_KEY, 
@@ -38,8 +46,10 @@ if($single==false){
     }
 }
 else{
+            define( 'API_ACCESS_KEY', 'AAAAUjJH48c:APA91bEatEWDjhZvtoi_4KaPoyutmCXq4L4gW4WyAnWRstfY0-ylcNSgAe0M75j3Edy4JZAfT9auEWRAJWll2ZqckW2IRFgEX-xrm8gdorWV3n21rcmvMVQzy9zO3HOiJd3sc0kBCmlN' );
+
     $data = array("to" => $key,
-                      "notification" => array( "title" => "Anomoz", "body" => "A place for anonymous chatting.","icon" => "../profiles/p1.jpg", "click_action" => "https://Anomoz.com"));                                                                    
+                      "notification" => array( "title" => "Anomoz", "body" => "A place for anonymous chatting.","icon" => "../p1.jpg", "click_action" => "https://library.anomoz.com/checkStatus.php?room=".$room));                                                                    
         $data_string = json_encode($data); 
         echo "The Json Data : ".$data_string; 
         $headers = array

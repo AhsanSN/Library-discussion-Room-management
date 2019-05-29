@@ -24,7 +24,7 @@ class DBController {
 }
 
 $db_handle = new DBController();
-$productResult = $db_handle->runQuery("select * from lib_bookings");
+$productResult = $db_handle->runQuery("select * from lib_bookings b inner join lib_students s on b.studentId= s.cardnumber order by b.id desc");
 
 ?>
 
@@ -79,11 +79,14 @@ table#tab th, table#tab td {
                 <th width="20%">BookingId</th>
                 <th width="25%">Room</th>
                 <th width="20%">Student ID</th>
+                <th width="20%">Student Name</th>
                 <th width="20%">Date</th>
                 <th width="20%">Time</th>
                 <th width="20%">Occupants</th>
                 <th width="20%">Expired</th>
                 <th width="20%">Purpose</th>
+                <th width="20%">Major</th>
+                <th width="20%">Batch</th>
             </tr>
         </thead>
         <tbody>
@@ -99,12 +102,15 @@ table#tab th, table#tab td {
                 <td><?php echo $productResult[$key]["bookingId"]; ?></td>
                 <td><?php echo $productResult[$key]["room"]; ?></td>
                 <td><?php echo $productResult[$key]["studentId"]; ?></td>
+                <td><?php echo $productResult[$key]["firstname"]." ".$productResult[$key]["surname"]; ?></td>
                 <td><?php echo substr($productResult[$key]["dateTimeTaken"], 0, 10) ?></td>
                 <td><?php echo substr($productResult[$key]["dateTimeTaken"], -10) ?></td>
                 <td><?php echo $productResult[$key]["nStudents"]; ?></td>
                 <?date_default_timezone_set("Asia/Karachi");?>
                 <td><?php echo substr(date('Y/m/d H:i:s', $productResult[$key]["expiry"]), -9);?></td>
                 <td><?php echo $productResult[$key]["purpose"]; ?></td>
+                <td><?php echo $productResult[$key]["sort1"]; ?></td>
+                <td><?php echo $productResult[$key]["sort2"]; ?></td>
             </tr>
            <?php
                 }

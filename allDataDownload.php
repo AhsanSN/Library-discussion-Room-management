@@ -74,29 +74,16 @@ if ($logged==0){
             <span class="navbar-toggler-icon icon-bar"></span>
             <span class="navbar-toggler-icon icon-bar"></span>
           </button>
-          <div class="collapse navbar-collapse justify-content-end">
-           
-            <ul class="navbar-nav">
-            
-              
-              <li class="nav-item dropdown">
-                <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="material-icons">person</i>
-                  <p class="d-lg-none d-md-block">
-                    Account
-                  </p>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                  <a class="dropdown-item" href="#">Log out</a>
-                </div>
-              </li>
-            </ul>
-          </div>
         </div>
       </nav>
       <!-- End Navbar -->
       <div class="content">
+          
+          
         <div class="container-fluid">
+            <?if ($session_role=="admin"){?>
+         <a href="./importStudentsData.php" target="_blank"> <button type="submit" class="btn btn-primary">Import Students Data</button></a>
+         <?}?>
           <div class="row">
             <div class="col-md-12">
               <div class="card">
@@ -131,6 +118,8 @@ if ($logged==0){
                         <td><a href="./profiles/data/exportData_bookings.php" target="_blank"><button class="btn btn-success btn-sm">View<div class="ripple-container"></div></button></a></td>
                         </tr>
                         
+                        <?if ($session_role=="admin"){?>
+
                         <tr>
                         <td>2</td>
                         <td>Flagged Students</td>
@@ -158,6 +147,15 @@ if ($logged==0){
                         <td>Contains a list of all the tokens obtained from all the devices.</td>
                         <td><a href="./profiles/data/exportData_notfTokens.php" target="_blank"><button class="btn btn-success btn-sm">View<div class="ripple-container"></div></button></a></td>
                         </tr>
+                        
+                        <tr>
+                        <td>6</td>
+                        <td>Queued Student</td>
+                        <td>Contains a list of all the students who were added to the queue.</td>
+                        <td><a href="./profiles/data/exportData_queueStudents.php" target="_blank"><button class="btn btn-success btn-sm">View<div class="ripple-container"></div></button></a></td>
+                        </tr>
+                        
+                        <?}?>
                         
                       </tbody>
                     </table>

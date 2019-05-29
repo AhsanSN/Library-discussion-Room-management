@@ -8,13 +8,13 @@ if ($logged==0){
     <?
 }
 $room = $_GET["room"]; 
+date_default_timezone_set("Asia/Karachi");
 if(isset($_POST["studentId"]) && isset($_GET["room"])){
     $room = $_GET["room"]; 
     $studentId = $_POST["studentId"];
     $nStudents = $_POST["nStudents"];
     $reason = $_POST["reason"];
     
-    date_default_timezone_set("Asia/Karachi");
     $timeTaken = date("d-m-Y:h:i:sa");//strval(date("d-m-Y"))+strval(date("h:i:sa")) ;
     $expiry = time()+ 3600*(2);
     
@@ -61,13 +61,17 @@ else{
 
 ?>
 <script>
+    var students_id_lst = [];
+    var students_name_lst = [];
+    var students_mobile_lst = [];
+
     var flagged_students_lst = [];
     var flagged_students_lst_reason = [];
     var flagged_students_lst_timePlaced = [];
 </script>
 <?
 
-$query = "SELECT `id`, `studentId`, `reason`, `timePlaced` FROM `lib_flags`
+$query = "SELECT `id`, `studentId`, `reason`, `timePlaced` FROM `lib_flags` order by id desc
 "; 
 $result = $con->query($query); 
 $i = 0;
@@ -79,7 +83,26 @@ if ($result->num_rows > 0)
         <script>
             flagged_students_lst[<?echo $i?>] = "<?echo $row['studentId']?>"
             flagged_students_lst_reason[<?echo $i?>] = "<?echo $row['reason']?>"
-            flagged_students_lst_timePlaced[<?echo $i?>] = "<?echo $row['timePlaced']?>"
+            flagged_students_lst_timePlaced[<?echo $i?>] = "<?echo date('d-m-Y H:i', $row['timePlaced'])?>"
+        </script>
+        <?
+        $i +=1;
+    }
+}
+
+$query = "SELECT * from lib_students order by id desc
+"; 
+$result = $con->query($query); 
+$i = 0;
+if ($result->num_rows > 0)
+{ 
+    while($row = $result->fetch_assoc()) 
+    { 
+        ?>
+        <script>
+            students_id_lst[<?echo $i?>] = "<?echo $row['cardnumber']?>"
+            students_mobile_lst[<?echo $i?>] = "<?echo $row['mobile']?>"
+            students_name_lst[<?echo $i?>] = "<?echo $row['firstname']." ".$row['surname']?>"
         </script>
         <?
         $i +=1;
@@ -88,7 +111,7 @@ if ($result->num_rows > 0)
 
 ?>
 <script>
-    console.log("flagged_students_lst", flagged_students_lst);
+    //console.log("students_id_lst", students_id_lst);
 </script>
 <!DOCTYPE html>
 <html lang="en">
@@ -129,7 +152,7 @@ if ($result->num_rows > 0)
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./profiles/exportData.php" target="_blank">
+            <a class="nav-link" href="./allDataDownload.php" >
               <i class="material-icons">import_export</i>
               <p>Export data</p>
             </a>
@@ -196,28 +219,44 @@ if ($result->num_rows > 0)
                           <input id="studentIdBox" onkeyup="showFlaggedStudents()" name="studentId" type="text" class="form-control" placeholder="" required>
                         </div>
                         <div class="form-group col-md-6">
-                          <label for="inputEmail4">Number of occupants</label>
-                          <input name="nStudents" type="number" class="form-control" placeholder="" required>
+                          <label for="inputEmail4">Student Name:</label>
+                        <input id="studentNameBox" value="" name="studentName" type="text" class="form-control" placeholder="" style="padding:9px;" required readonly>
                         </div>
                        
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-6">
+                          <label for="inputEmail4">Number of occupants</label>
+                          <input name="nStudents" type="number" class="form-control" placeholder="" required>
+                        </div>
+                        
+                        <div class="form-group col-md-6">
+                          <label for="inputEmail4">Mobile No.</label>
+                        <input id="mobileBox" value="" name="mobile" type="text" class="form-control" placeholder="" style="padding:9px;" required readonly>
+                        </div>
+                        
+                      </div>
+                      
+                      <div class="form-row">
+                      
+                        <div class="form-group col-md-6">
                           <label for="inputEmail4">Purpose</label>
                             <select name="reason" class="form-control selectpicker" data-style="btn btn-link">
                               <option value="noReasonSpecified">-- Specify reason --</option>
                               <option value="Group Study">Group Study</option>
-                              <option value="Interview">Interview</option>
                               <option value="Presentation">Presentation</option>
-                              <option value="Exam">Exam</option>
+                              <option value="Assignment">Assignment</option>
+                              <option value="Session">Session</option>
+                              <option value="Interview">Interview</option>
                             </select>
                         </div>
-                      </div>
+                    </div>
+                        
                       <div style="display:none" class="alert alert-warning" role="alert" id="flaggedStudentsBox">
                           Flag on Student! Reason:
                         </div>
 
-                      <button type="submit" class="btn btn-primary">Book</button>
+                      <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Book</button>
                     </form>
                   </div>
                 </div>
@@ -228,6 +267,7 @@ if ($result->num_rows > 0)
       </div>
      <?include_once("./phpParts/footer.php");?>
      <script>
+     var count = 0;
          function showFlaggedStudents(){
             var search = document.getElementById("studentIdBox").value;
             if (search!= '')
@@ -238,8 +278,8 @@ if ($result->num_rows > 0)
                 for (var i = 0; i < flagged_students_lst.length; i++) {
                     if(flagged_students_lst[i].indexOf(search.toLowerCase()) != -1)
                     {
-                        console.log("flagged_students_lst_reason[i]", flagged_students_lst_reason[i]);
-                        var $deleteLink = $("<span>"+(Date(flagged_students_lst_timePlaced[i])).substr(0,21)+": "+flagged_students_lst_reason[i]+"</span>");
+                        //console.log("flagged_students_lst_reason[i]", flagged_students_lst_timePlaced[i]);
+                        var $deleteLink = $("<span>"+((flagged_students_lst_timePlaced[i])).substr(0,21)+": "+flagged_students_lst_reason[i]+"</span>");
                         $myList.append($deleteLink);
                     }
                 }
@@ -247,13 +287,40 @@ if ($result->num_rows > 0)
                     document.getElementById("flaggedStudentsBox").innerHTML = " ";
                     document.getElementById("flaggedStudentsBox").style.display = "none";
                 }
+                //show studentname
+                count = 0;
+                var countI = 0;
+                //search = Number(search)
+                for (var i = 0; i < students_id_lst.length; i++) {
+                    if(students_id_lst[i].indexOf(search) != -1)
+                    {
+                        //console.log("students_id_lst[i]", students_id_lst[i], students_name_lst[i]);
+                        count +=1;
+                        countI=i;
+                    }
+                }
+                if(count==1){
+                    document.getElementById("studentNameBox").value = (students_name_lst[countI]).toString();
+                    document.getElementById("mobileBox").value = (students_mobile_lst[countI]).toString();
+                    document.getElementById("submitBtn").disabled = false;
+                    
+                }
+                if(count!=1){
+                    document.getElementById("studentNameBox").value = "";
+                    document.getElementById("mobileBox").value = "";
+                    document.getElementById("submitBtn").disabled = true;
+
+                }
                 
             }
             if (search== '')
             {
                 document.getElementById("flaggedStudentsBox").innerHTML = " ";
                 document.getElementById("flaggedStudentsBox").style.display = "none";
+                document.getElementById("studentNameBox").value = "";
+                document.getElementById("submitBtn").disabled = true;
             }
+            
         }
 
 

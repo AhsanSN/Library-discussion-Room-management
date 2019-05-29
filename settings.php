@@ -7,6 +7,67 @@ if ($logged==0){
         </script>
     <?
 }
+
+if(isset($_POST["studentId"])&&isset($_POST["newPhone"])&&isset($_POST["oldPhone"])){
+    $studentId = $_POST["studentId"];
+    $newPhone = $_POST["newPhone"];
+    $oldPhone = $_POST["oldPhone"];
+    
+     $sql="update lib_students set mobile='$newPhone' where mobile='$oldPhone' and cardnumber='$studentId'";
+    
+        if(!mysqli_query($con,$sql))
+        {
+        echo"can not";
+        }
+}
+
+if(isset($_GET["makeAdmin"])){
+    $email = $_GET["makeAdmin"];
+    
+     $sql="update lib_users  set role='admin' where email='$email'";
+    
+        if(!mysqli_query($con,$sql))
+        {
+        echo"can not";
+        }
+}
+
+if(isset($_GET["downgradeAdmin"])){
+    $email = $_GET["downgradeAdmin"];
+    
+    $sql="update lib_users  set role='staff' where email='$email'";
+    
+        if(!mysqli_query($con,$sql))
+        {
+        echo"can not";
+        }
+}
+
+if(isset($_GET["removeUser"])){
+    $email = $_GET["removeUser"];
+    
+    $sql="delete from lib_users where email='$email'";
+    
+        if(!mysqli_query($con,$sql))
+        {
+        echo"can not";
+        }
+}
+
+if(isset($_POST["name"])&&isset($_POST["email"])&&isset($_POST["password"])){
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+    
+     $sql="insert into lib_users(name, email, password, role) values('$name', '$email', '$password', 'staff')";
+    
+        if(!mysqli_query($con,$sql))
+        {
+        echo"can not";
+        }
+}
+
+
 if(isset($_POST["oldPassword"])){
     $newPassword = $_POST["newPassword"];
     $oldPassword = $_POST["oldPassword"];
@@ -17,7 +78,7 @@ if((!$newPassword)||(!$oldPassword)){
 else{ 
 
         //update room status
-        $sql="update yp_vendors  set password='$newPassword' where password='$oldPassword' and email='$session_email '";
+        $sql="update lib_users  set password='$newPassword' where password='$oldPassword' and email='$session_email '";
     
         if(!mysqli_query($con,$sql))
         {
@@ -31,17 +92,62 @@ else{
     <?
         
 }}
-//get flagged students:
+
+
+if(isset($_POST["flagComment"])){
+    $flagComment = $_POST["flagComment"];
+
+if((!$flagComment)){
+    $message = "Please insert both fields.";
+    } 
+else{ 
+
+        //update room status
+        $sql="insert into lib_editOptions (`comment`) values ('$flagComment')";
+    
+        if(!mysqli_query($con,$sql))
+        {
+        echo"can not";
+        }
+       
+        
+}}
+
+
+//remove option
+if(isset($_GET["removeOption"])){
+    $removeOption = $_GET["removeOption"];
+
+if((!$removeOption)){
+    $message = "Please insert both fields.";
+    } 
+else{ 
+
+        //update room status
+        $sql="delete from lib_editOptions where id='$removeOption'";
+    
+        if(!mysqli_query($con,$sql))
+        {
+        echo"can not";
+        }
+       
+        
+}}
+
+
+$query_bookedRoomsList = "select * from lib_editOptions"; 
+   
+$query_users = "select * from lib_users"; 
 
 ?>
 <script>
-    var flagged_students_lst = [];
-    var flagged_students_lst_reason = [];
-    var flagged_students_lst_timePlaced = [];
+    var students_id_lst = [];
+    var students_name_lst = [];
+    var students_mobile_lst = [];
+
 </script>
 <?
-
-$query = "SELECT `id`, `studentId`, `reason`, `timePlaced` FROM `lib_flags`
+$query = "SELECT * from lib_students order by id desc
 "; 
 $result = $con->query($query); 
 $i = 0;
@@ -51,9 +157,9 @@ if ($result->num_rows > 0)
     { 
         ?>
         <script>
-            flagged_students_lst[<?echo $i?>] = "<?echo $row['studentId']?>"
-            flagged_students_lst_reason[<?echo $i?>] = "<?echo $row['reason']?>"
-            flagged_students_lst_timePlaced[<?echo $i?>] = "<?echo $row['timePlaced']?>"
+            students_id_lst[<?echo $i?>] = "<?echo $row['cardnumber']?>"
+            students_mobile_lst[<?echo $i?>] = "<?echo $row['mobile']?>"
+            students_name_lst[<?echo $i?>] = "<?echo $row['firstname']." ".$row['surname']?>"
         </script>
         <?
         $i +=1;
@@ -61,9 +167,6 @@ if ($result->num_rows > 0)
 }
 
 ?>
-<script>
-    console.log("flagged_students_lst", flagged_students_lst);
-</script>
 <!DOCTYPE html>
 <html lang="en">
 <?include_once("./phpParts/head.php");?>
@@ -84,7 +187,7 @@ if ($result->num_rows > 0)
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item active  ">
+          <li class="nav-item ">
             <a class="nav-link" href="./dashboard.php">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
@@ -108,7 +211,7 @@ if ($result->num_rows > 0)
               <p>Export data</p>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="./settings.php">
               <i class="material-icons">settings</i>
               <p>Settings</p>
@@ -137,9 +240,40 @@ if ($result->num_rows > 0)
       <div class="content">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-md-12">
-              
+            <div class="col-lg-6 col-md-12">
               <div class="card">
+                <div class="card-header card-header-primary">
+
+                  <h4 class="card-title ">Change Phone Number - Student</h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <form style="margin:12px;" method="post" action="" autocomplete="off" >
+                     <div class="form-row">
+                         <div class="form-group col-md-6">
+                          <label for="inputEmail4">Student Id</label>
+                          <input id="studentIdBox" onkeyup="showFlaggedStudents()" name="studentId" type="text" class="form-control" placeholder="" required>
+                          </div>
+                         <div class="form-group col-md-6">
+                          <label for="inputEmail4">Student Name:</label>
+                        <input id="studentNameBox" value="" name="studentName" type="text" class="form-control" placeholder="" style="padding:9px;" required readonly>
+                        </div>
+                       <div class="form-group col-md-6">
+                          <label for="inputEmail4">New Phone Number</label>
+                          <input id="newPhoneBox" onkeyup="validNumber()" name="newPhone" type="text" class="form-control" placeholder="" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="inputEmail4">Old Phone Number</label>
+                          <input id="oldPhoneBox"  name="oldPhone" type="text" class="form-control" placeholder="" style="padding:9px;"  required readonly>
+                        </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Change Number</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card" style="margin-top: 40px;">
                 <div class="card-header card-header-primary">
 
                   <h4 class="card-title ">Change Password</h4>
@@ -157,18 +291,192 @@ if ($result->num_rows > 0)
                           <input id="studentIdBox"  name="newPassword" type="password" class="form-control" placeholder="" required>
                         </div>
                       </div>
-                     
-
                       <button type="submit" class="btn btn-primary">Change Password</button>
                     </form>
                   </div>
                 </div>
               </div>
             </div>
+
+        
+            <div class="col-lg-6 col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+
+                  <h4 class="card-title ">Flag Options</h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    
+                    
+                    <table class="table">
+                        <tbody>
+                          <?php
+                          $result_bookedRoomList = $con->query($query_bookedRoomsList); 
+                            if ($result_bookedRoomList->num_rows > 0)
+                            { 
+                                while($row = $result_bookedRoomList->fetch_assoc()) 
+                                { 
+                                    echo "<tr>";
+                                    echo "<td>".$row['comment']."</td>";
+                                    echo '<td><a href="./settings.php?removeOption='.$row['id'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:red;"><i class="material-icons">cancel</i></button></a></td>';
+                                    echo "</tr>";
+                                }
+                            }
+                          ?>
+                          
+                        </tbody>
+                      </table>
+                      <tr>
+                            <td>
+                                <form method="post" action="" style="background-color:#f5eef6;padding:10px;">
+                                    <label for="inputEmail4">Insert new Flag</label>
+                                    <input name="flagComment" type="text" class="form-control" placeholder="" required>
+                                    <button type="submit" class="btn btn-primary">Insert</button>
+                                </form>
+                            </td>
+                          </tr>
+                  </div>
+                </div>
+            </div>
           </div>
         </div>
+        
+        
+        
+        <?if($session_role=="admin"){?>
+                <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              
+              <div class="card">
+                <div class="card-header card-header-primary">
+
+                  <h4 class="card-title ">Users</h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    
+                    
+                    <table class="table">
+                        <thead class=" text-primary">
+                        <th>
+                          Name
+                        </th>
+                        <th class="text-primary">
+                          Email
+                        </th>
+                        <th>
+                          Role
+                        </th>
+                        <th>
+                          Action
+                        </th>
+                        
+                      </thead>
+                        <tbody>
+                          <?php
+                          $result_users = $con->query($query_users); 
+                            if ($result_users->num_rows > 0)
+                            { 
+                                while($row = $result_users->fetch_assoc()) 
+                                { 
+                                    echo "<tr>";
+                                    echo "<td>".$row['name']."</td>";
+                                    echo "<td>".$row['email']."</td>";
+                                    echo "<td>".$row['role']."</td>";
+                                    echo '<td><a href="./settings.php?makeAdmin='.$row['email'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:green;"><i class="material-icons">arrow_upward</i></button></a></td>';
+                                    echo '<td><a href="./settings.php?downgradeAdmin='.$row['email'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:orange;"><i class="material-icons">arrow_downward</i></button></a></td>';
+                                    echo '<td><a href="./settings.php?removeUser='.$row['email'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:red;"><i class="material-icons">cancel</i></button></a></td>';
+                                    echo "</tr>";
+                                }
+                            }
+                          ?>
+                          
+                        </tbody>
+                      </table>
+                      <tr>
+                    <td>
+                        <form method="post" action="" style="background-color:#f5eef6;padding:10px;">
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">Name</label>
+                                  <input name="name" type="text" class="form-control" placeholder="" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">Email</label>
+                                  <input name="email" type="email" class="form-control" placeholder="" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">Password</label>
+                                  <input name="password" type="password" class="form-control" placeholder="" required>
+                                </div>
+                               
+                              </div>
+                            
+                            <button type="submit" class="btn btn-primary">Insert User</button>
+                        </form>
+                    </td>
+                  </tr>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <?}?>
+
       </div>
      <?include_once("./phpParts/footer.php");?>
+     <script>
+     var count = 0;
+         function showFlaggedStudents(){
+            var search = document.getElementById("studentIdBox").value;
+            if (search!= '')
+            {
+                //show studentname
+                count = 0;
+                var countI = 0;
+                //search = Number(search)
+                for (var i = 0; i < students_id_lst.length; i++) {
+                    if(students_id_lst[i].indexOf(search) != -1)
+                    {
+                        //console.log("students_id_lst[i]", students_id_lst[i], students_name_lst[i]);
+                        count +=1;
+                        countI=i;
+                    }
+                }
+                if(count==1){
+                    document.getElementById("studentNameBox").value = (students_name_lst[countI]).toString();
+                    document.getElementById("oldPhoneBox").value = (students_mobile_lst[countI]).toString();
+                }
+                if(count!=1){
+                    document.getElementById("studentNameBox").value = "";
+                    document.getElementById("oldPhoneBox").value = "";
+                    document.getElementById("submitBtn").disabled = true;
+
+                }
+                
+            }
+            if (search== '')
+            {
+                document.getElementById("flaggedStudentsBox").innerHTML = " ";
+                document.getElementById("flaggedStudentsBox").style.display = "none";
+                document.getElementById("studentNameBox").value = "";
+                document.getElementById("submitBtn").disabled = true;
+            }
+            
+        }
+
+    function validNumber(){
+        if(document.getElementById("newPhoneBox").value.length==12){
+            document.getElementById("submitBtn").disabled = false;
+                
+            }else{
+                document.getElementById("submitBtn").disabled = true;
+            }
+    }
+     </script>
      
 </body>
 

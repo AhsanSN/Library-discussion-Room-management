@@ -11,7 +11,7 @@ if ($logged==0){
 //number of rooms booked uptil now
 $query = "select 
 	*
-from lib_bookings order by id desc
+from lib_bookings b inner join lib_students s on b.studentId = s.cardnumber order by b.id desc
 "; 
 $result = $con->query($query); 
 
@@ -81,24 +81,6 @@ $result = $con->query($query);
             <span class="navbar-toggler-icon icon-bar"></span>
             <span class="navbar-toggler-icon icon-bar"></span>
           </button>
-          <div class="collapse navbar-collapse justify-content-end">
-           
-            <ul class="navbar-nav">
-            
-              
-              <li class="nav-item dropdown">
-                <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="material-icons">person</i>
-                  <p class="d-lg-none d-md-block">
-                    Account
-                  </p>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                  <a class="dropdown-item" href="#">Log out</a>
-                </div>
-              </li>
-            </ul>
-          </div>
         </div>
       </nav>
       <!-- End Navbar -->
@@ -135,19 +117,25 @@ $result = $con->query($query);
                     <table class="table">
                       <thead class=" text-primary">
                         <th>
-                          ID
+                          No.
                         </th>
                         <th class="text-primary">
                           Room Number
                         </th>
                         <th>
-                          Booked By
+                          St. ID
+                        </th>
+                        <th>
+                          St. Name
                         </th>
                         <th>
                           Date
                         </th>
                         <th>
-                          Time
+                          Booking Time
+                        </th>
+                        <th>
+                          Booking Till
                         </th>
                         <th>
                           Occupants
@@ -168,8 +156,11 @@ $result = $con->query($query);
                                 echo "<td>".$row['id']."</td>";
                                 echo "<td>".$row['room']."</td>";
                                 echo "<td>".$row['studentId']."</td>";
+                                echo "<td>".$row['firstname']." ".$row['surname']. "</td>";
                                 echo "<td>".substr($row['dateTimeTaken'],0,10)."</td>";
                                 echo "<td>".substr($row['dateTimeTaken'],-10)."</td>";
+                                date_default_timezone_set("Asia/Karachi");
+                                echo "<td>".substr(date('Y/m/d H:i:s',$row['expiry']), -9)."</td>";
                                 echo "<td>".$row['nStudents']."</td>";
                                 echo "<td>".$row['purpose']."</td>";
                                 echo "</tr>";

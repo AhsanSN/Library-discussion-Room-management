@@ -12,20 +12,28 @@ include_once("database.php");
 //cheaking
 if (isset($_SESSION['email'])&&isset($_SESSION['password']))
 {
-    $session_password = $_SESSION['password'];
-    $session_email =  $_SESSION['email'];
-    $query = "SELECT *  FROM yp_vendors WHERE email='$session_email' AND password='$session_password'";
+        $session_password = $_SESSION['password'];
+        $session_email =  $_SESSION['email'];
+        $query = "SELECT *  FROM lib_users WHERE email='$session_email' AND password='$session_password'";
 }
 $result = $con->query($query);
 if ($result->num_rows > 0){
+    while($row = $result->fetch_assoc()) 
+    {
     $logged=1;
+    $session_role = $row['role'];
+    $session_name = $row['name'];
+    
+    /**
+    ?>
+    <script>console.log("$session_role<?echo $session_role ?>")</script>
+    <?
+    **/
+    }
+    
 }
 else
 {
         $logged=0;
 }
-
-$g_rooms = array("202", "203", "204",  "205",  "206",  "207",  "208");
-$g_roomCapacity = array("3", "2", "3",  "5",  "7",  "2",  "4");
-
 ?>

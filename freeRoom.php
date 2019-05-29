@@ -35,8 +35,8 @@ else{
     }
         
         //
-        
-    $sql="update lib_bookings set status='free' where room='$room' and bookingId = '$bookingId'";
+    $expiry = time()-10;    
+    $sql="update lib_bookings set status='free', expiry='$expiry' where room='$room' and bookingId = '$bookingId'";
     
         if(!mysqli_query($con,$sql))
         {

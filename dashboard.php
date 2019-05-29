@@ -1,10 +1,11 @@
 <?include_once("global.php");?>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <!DOCTYPE html>
 <html lang="en">
 
 <?include("./phpParts/head.php")?>
-<body class=""  onload="startTime()">
+<body class="" onload="startTime()">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
 <?
 if ($logged==0){ 
     ?>
@@ -14,12 +15,53 @@ if ($logged==0){
     <?
 }
 
+//queue booking
+if(isset($_POST['occupants'])&&isset($_POST['studentId'])){
+    $occupants = $_POST['occupants'];
+    $studentId = $_POST['studentId'];
+    
+    //update room status
+    date_default_timezone_set("Asia/Karachi");
+    $timeTaken = date("d-m-Y:h:i:sa");
+    
+        $sql="insert into lib_bookingQueue (`studentId`, `occupants`, `bookingTime`, `status`) values ('$studentId','$occupants', '$timeTaken', 'waiting')";
+    
+        if(!mysqli_query($con,$sql))
+        {
+        echo"can not";
+        }
+}
+
+//queue booking canceled
+if(isset($_GET['cancelQueueEntry'])){
+    $id = $_GET['cancelQueueEntry'];
+
+    $sql="update lib_bookingQueue set status='cancelled' where id = '$id'";
+    
+        if(!mysqli_query($con,$sql))
+        {
+        echo"can not";
+        }
+}
+
 //sending notification
 if(isset($_GET['notfType'])&&isset($_GET['bookingId'])){
-    //$studentId = $_GET['studentId'];
+    
     $notfType = $_GET['notfType'];
     $bookingId = $_GET['bookingId'];
     $notfSent = false;
+    
+    //$studentId = $_GET['studentId'];
+    $query = "SELECT * FROM lib_bookings where bookingId='$bookingId'"; 
+    $result = $con->query($query); 
+    if ($result->num_rows > 0)
+    { 
+        while($row = $result->fetch_assoc()) 
+        { 
+            $studentId = $row['studentId'];
+        }
+    }
+    
     //check if sent
     $query = "SELECT * FROM `lib_notfStatus` n right OUTER join lib_room r on n.bookingId = r.bookingId where r.status!='free' and r.bookingId='$bookingId' and n.notfType='$notfType' order by r.room desc"; 
     $result = $con->query($query); 
@@ -33,22 +75,12 @@ if(isset($_GET['notfType'])&&isset($_GET['bookingId'])){
         }
     }
     if($notfSent==false){
-        //get student id
-        $query = "SELECT studentId, room from lib_bookings where bookingId='$bookingId'"; 
-        $result = $con->query($query); 
-        if ($result->num_rows > 0)
-        { 
-            while($row = $result->fetch_assoc()) 
-            { 
-                $studentId = $row['studentId'];
-                $room = $row['room'];
-            }
-        }
-        
+       
         ?>
     <script type="text/javascript">
             console.log("sending real notification");
         </script>
+
     <?
        include_once("./profiles/sendAllNotf.php"); 
     }
@@ -163,6 +195,14 @@ from lib_room where status = 'free' order by room desc
 "; 
 $result_freeRoomListBooking = $con->query($query_freeRoomsListBooking); 
 
+//waiting queue
+$query_bookingQue = "select 
+*
+from lib_bookingQueue where status='waiting' order by id asc
+"; 
+$result_bookingQue = $con->query($query_bookingQue); 
+
+
 
 
 ?>
@@ -192,7 +232,7 @@ if ($result->num_rows > 0)
 }
 
 ?>
-  <div class="wrapper ">
+  <div class="wrapper">
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="assets/img/sidebar-1.jpg">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
@@ -201,7 +241,7 @@ if ($result->num_rows > 0)
     -->
       <div class="logo">
         <a href="./" class="simple-text logo-normal">
-          HU-Library
+          <?echo $session_name."'s Panel"?>
         </a>
       </div>
       <div class="sidebar-wrapper">
@@ -242,9 +282,6 @@ if ($result->num_rows > 0)
     <div class="main-panel">
       <!-- Navbar -->
       <?include("./phpParts/navBar.php")?>
-
-<div class="item"></div>
-
         
       <!-- End Navbar -->
       <div class="content">
@@ -434,6 +471,7 @@ if ($result->num_rows > 0)
                                     echo "</td>";
                                     echo "<td>Room ".$row['room']."</td>";
                                     echo '<td><a href="./flagStudent.php?studentId='.$row['studentId'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:#e77b2b;"><i class="material-icons">flag</i></button></a></td>';
+                                    echo '<td><a href="./extendTimeRoom.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-twitter"><i class="material-icons">plus_one</i></button><br></a></td>';
                                     echo '<td><a href="./swapCard.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-twitter"><i class="material-icons">swap_horiz</i></button></a></td>';
                                     echo '<td><a href="./freeRoom.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:red;"><i class="material-icons">cancel</i></button></a></td>';
                                     echo "</tr>";
@@ -495,19 +533,92 @@ if ($result->num_rows > 0)
               </div>
             </div>
             <div class="col-lg-6 col-md-12">
-              <div class="card">
-                <div class="card-header card-header-success">
-                  <h4 class="card-title">Book Room</h4>
-                  <p class="card-category">Booking a room is now easier.</p>
+                            <div class="card">
+                <div class="card-header card-header-tabs card-header-primary">
+                  <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper">
+                      <span class="nav-tabs-title">Booking Panel</span>
+                      <ul class="nav nav-tabs" data-tabs="tabs">
+                        <li class="nav-item">
+                          <a class="nav-link active" href="#bookingQueue" data-toggle="tab">
+                            Queue
+                            <div class="ripple-container"></div>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#book" data-toggle="tab">
+                            Book
+                            <div class="ripple-container"></div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
+                <div class="card-body">
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="bookingQueue">
                 <div class="card-body table-responsive">
+                  <table class="table table-hover">
+                    <thead class="text-success">
+                      <th>StudentId</th>
+                      <th>Occupants</th>
+                      <th>Booking Time</th>
+                      <th>Action</th>
+                    </thead>
+                    <tbody>
+                      <?
+                      if ($result_bookingQue->num_rows > 0)
+                            { 
+                                while($row = $result_bookingQue->fetch_assoc()) 
+                                { 
+                                    echo "<tr>";
+                                    echo "<td>".$row['studentId']."</td>";
+                                    echo "<td>".$row['occupants']."</td>";
+                                    echo "<td>".substr($row['bookingTime'],-10)."</td>";
+                                    echo '<td><a href="./dashboard.php?cancelQueueEntry='.$row['id'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:red;"><i class="material-icons">cancel</i></button></a></td>';
+                                    echo '<td><a href="./bookRoomFromQueue.php?id='.$row['id'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:green;"><i class="material-icons">check_box</i></button></a></td>';
+
+                                    echo "</tr>";
+                                }
+                            }
+                      ?>
+                        
+                    </tbody>
+                    
+                  </table>
+                  
+                    <tr>
+                    <td>
+                        <form method="post" action="" style="background-color:#f5eef6;padding:10px;">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                  <label for="inputEmail4">Student ID</label>
+                                  <input id="studentId" name="studentId" type="text" class="form-control" placeholder="" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                  <label for="inputEmail4">Number of occupants</label>
+                                  <input name="occupants" type="number" class="form-control" placeholder="" required>
+                                </div>
+                               
+                              </div>
+                            
+                            <button type="submit" class="btn btn-primary">Insert to Queue</button>
+                        </form>
+                    </td>
+                  </tr>
+                </div>
+
+                    </div>
+                    <div class="tab-pane" id="book">
+                      <div class="card-body table-responsive">
                   <table class="table table-hover">
                     <thead class="text-success">
                       <th>Room</th>
                       <th>Capacity</th>
                       <th>Book</th>
                     </thead>
-                    <tbody>
+                        <tbody>
                       <?
                       if ($result_freeRoomListBooking->num_rows > 0)
                             { 
@@ -523,13 +634,19 @@ if ($result->num_rows > 0)
                       ?>
                     
                     </tbody>
-                  </table>
+                      </table>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
       </div>
+    </div>
+            <?include("./phpParts/footer.php")?>
 
         <script>
             //changing clock
@@ -601,7 +718,7 @@ if ($result->num_rows > 0)
                         
                     }
                     //expiry notification
-                    if((d<10) && (bookingId!=bookingBookingId[i]) && (notfType!='-1min') ){
+                    if((d<-2) && (bookingId!=bookingBookingId[i]) && (notfType!='-1min') ){
                         
                         //check if notification sent
                         var haveSent1minNotf = false;
@@ -627,10 +744,6 @@ if ($result->num_rows > 0)
    
 
                   </script>
-
-            <?include("./phpParts/footer.php")?>
-            
-
 </body>
 
 </html>
