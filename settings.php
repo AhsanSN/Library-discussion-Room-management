@@ -103,7 +103,7 @@ if((!$flagComment)){
 else{ 
 
         //update room status
-        $sql="insert into lib_editOptions (`comment`) values ('$flagComment')";
+        $sql="insert into lib_editOptions (`comment`, `cat`) values ('$flagComment', 'flag')";
     
         if(!mysqli_query($con,$sql))
         {
@@ -115,8 +115,8 @@ else{
 
 
 //remove option
-if(isset($_GET["removeOption"])){
-    $removeOption = $_GET["removeOption"];
+if(isset($_GET["removeFlagOption"])){
+    $removeOption = $_GET["removeFlagOption"];
 
 if((!$removeOption)){
     $message = "Please insert both fields.";
@@ -124,7 +124,7 @@ if((!$removeOption)){
 else{ 
 
         //update room status
-        $sql="delete from lib_editOptions where id='$removeOption'";
+        $sql="delete from lib_editOptions where id='$removeOption' and cat='flag'";
     
         if(!mysqli_query($con,$sql))
         {
@@ -135,7 +135,51 @@ else{
 }}
 
 
-$query_bookedRoomsList = "select * from lib_editOptions"; 
+if(isset($_POST["queueCommentAdd"])){
+    $flagComment = $_POST["queueCommentAdd"];
+
+if((!$flagComment)){
+    $message = "Please insert both fields.";
+    } 
+else{ 
+
+        //update room status
+        $sql="insert into lib_editOptions (`comment`, `cat`) values ('$flagComment', 'cancelQueue')";
+    
+        if(!mysqli_query($con,$sql))
+        {
+        echo"can not";
+        }
+       
+        
+}}
+
+
+//remove option
+if(isset($_GET["queueOptionRemove"])){
+    $removeOption = $_GET["queueOptionRemove"];
+
+if((!$removeOption)){
+    $message = "Please insert both fields.";
+    } 
+else{ 
+
+        //update room status
+        $sql="delete from lib_editOptions where id='$removeOption' and cat='cancelQueue'";
+    
+        if(!mysqli_query($con,$sql))
+        {
+        echo"can not";
+        }
+       
+        
+}}
+
+
+$query_bookedRoomsList = "select * from lib_editOptions where cat='flag'"; 
+   
+$query_cancelQueue = "select * from lib_editOptions where cat='cancelQueue'"; 
+
    
 $query_users = "select * from lib_users"; 
 
@@ -339,6 +383,47 @@ if ($result->num_rows > 0)
                   </div>
                 </div>
             </div>
+            
+                              <div class="card">
+                <div class="card-header card-header-primary">
+
+                  <h4 class="card-title ">Cancel Booking Queue Reasons</h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    
+                    
+                    <table class="table">
+                        <tbody>
+                          <?php
+                          $result_cancelQueue = $con->query($query_cancelQueue); 
+                            if ($result_cancelQueue->num_rows > 0)
+                            { 
+                                while($row = $result_cancelQueue->fetch_assoc()) 
+                                { 
+                                    echo "<tr>";
+                                    echo "<td>".$row['comment']."</td>";
+                                    echo '<td><a href="./settings.php?queueOptionRemove='.$row['id'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:red;"><i class="material-icons">cancel</i></button></a></td>';
+                                    echo "</tr>";
+                                }
+                            }
+                          ?>
+                          
+                        </tbody>
+                      </table>
+                      <tr>
+                            <td>
+                                <form method="post" action="" style="background-color:#f5eef6;padding:10px;">
+                                    <label for="inputEmail4">Insert new Flag</label>
+                                    <input name="queueCommentAdd" type="text" class="form-control" placeholder="" required>
+                                    <button type="submit" class="btn btn-primary">Insert</button>
+                                </form>
+                            </td>
+                          </tr>
+                  </div>
+                </div>
+            </div>
+
           </div>
         </div>
         

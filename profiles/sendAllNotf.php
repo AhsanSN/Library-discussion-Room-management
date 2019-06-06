@@ -18,14 +18,13 @@ if ($result->num_rows > 0)
 
 if($notfType=="10min"){
 $email_subject = "Room ".$room." - booking expiring" ;
-$email_body = "Dear ".$name.", Your booking for discussion room ".$room." will expire after 10 mins. Kindly, either prepare to empty the room, or go to the counter to extend your booking timperiod." ;
+$email_body = "Dear ".$name.", Your booking for discussion room ".$room." will expire after 10 mins. Kindly, either prepare to empty the room to avoid being flagged." ;
 
 }
 if($notfType=="-1min"){
 $email_subject = "Room ".$room." - booking expired" ;
-$email_body = "Dear ".$name.", Your booking for discussion room ".$room." has expired. Kindly, empty the room, or go to the counter to extend your booking timperiod." ;
+$email_body = "Dear ".$name.", Your booking for discussion room ".$room." has expired. Kindly, empty the room to avoid being flagged." ;
 }
-
 
 
 //notf sent
@@ -36,7 +35,6 @@ echo"can not";
 }
 
 
-//include_once("./emailer.php");
 ?>
 
 <script>
@@ -62,13 +60,12 @@ console.log('The Ok Button was clicked.');
 //send push notf 
 
 if($notfType=="10min"){
-$notfBody = "Your booking for discussion room ".$room." will expire after 10 mins. Kindly, either prepare to empty the room, or go to the counter to extend your booking timperiod." ;
+$notfBody = "Your booking for discussion room ".$room." will expire after 10 mins. Kindly, either prepare to empty the room to avoid being flagged." ;
 
 }
 if($notfType=="-1min"){
-$notfBody = "Your booking for discussion room ".$room." has expired. Kindly, empty the room, or go to the counter to extend your booking timperiod." ;
+$notfBody = "Your booking for discussion room ".$room." has expired. Kindly, empty the room to avoid being flagged." ;
 }
-
 
 $token = array();
 //get token

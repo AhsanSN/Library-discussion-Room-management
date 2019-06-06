@@ -81,6 +81,7 @@ table#tab th, table#tab td {
                 <th width="20%">Date</th>
                 <th width="20%">Time</th>
                 <th width="25%">Status</th>
+                <th width="25%">Cancel Reason</th>
             </tr>
         </thead>
         <tbody>
@@ -98,6 +99,7 @@ table#tab th, table#tab td {
                 <td><?php echo substr($productResult[$key]["bookingTime"], 0, 10) ?></td>
                 <td><?php echo substr($productResult[$key]["bookingTime"], -10) ?></td>
                 <td><?php echo $productResult[$key]["status"]; ?></td>
+                <td><?php echo $productResult[$key]["cancelReason"]; ?></td>
        
             </tr>
            <?php

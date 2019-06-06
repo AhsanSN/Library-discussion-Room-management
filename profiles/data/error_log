@@ -332,3 +332,13 @@
 [15-May-2019 14:46:45 Europe/London] PHP Notice:  Undefined index: dateTimeTaken in /home/anomozco/library.anomoz.com/profiles/data/exportData_swappedCards.php on line 100
 [15-May-2019 14:47:01 Europe/London] PHP Notice:  Undefined index: dateTimeTaken in /home/anomozco/library.anomoz.com/profiles/data/exportData_swappedCards.php on line 100
 [15-May-2019 14:47:01 Europe/London] PHP Notice:  Undefined index: dateTimeTaken in /home/anomozco/library.anomoz.com/profiles/data/exportData_swappedCards.php on line 100
+[29-May-2019 12:57:35 Asia/Karachi] PHP Notice:  Undefined variable: row in /home/anomozco/library.anomoz.com/profiles/data/exportData_bookings.php on line 100
+[29-May-2019 12:57:35 Asia/Karachi] PHP Notice:  Undefined variable: row in /home/anomozco/library.anomoz.com/profiles/data/exportData_bookings.php on line 100
+[29-May-2019 12:57:35 Asia/Karachi] PHP Notice:  Undefined variable: row in /home/anomozco/library.anomoz.com/profiles/data/exportData_bookings.php on line 100
+[29-May-2019 12:57:35 Asia/Karachi] PHP Notice:  Undefined variable: row in /home/anomozco/library.anomoz.com/profiles/data/exportData_bookings.php on line 100
+[29-May-2019 12:57:35 Asia/Karachi] PHP Notice:  Undefined variable: row in /home/anomozco/library.anomoz.com/profiles/data/exportData_bookings.php on line 100
+[29-May-2019 12:57:35 Asia/Karachi] PHP Notice:  Undefined variable: row in /home/anomozco/library.anomoz.com/profiles/data/exportData_bookings.php on line 100
+[29-May-2019 12:57:35 Asia/Karachi] PHP Notice:  Undefined variable: row in /home/anomozco/library.anomoz.com/profiles/data/exportData_bookings.php on line 100
+[29-May-2019 12:57:35 Asia/Karachi] PHP Notice:  Undefined variable: row in /home/anomozco/library.anomoz.com/profiles/data/exportData_bookings.php on line 100
+[29-May-2019 12:57:35 Asia/Karachi] PHP Notice:  Undefined variable: row in /home/anomozco/library.anomoz.com/profiles/data/exportData_bookings.php on line 100
+[29-May-2019 12:57:35 Asia/Karachi] PHP Notice:  Undefined variable: row in /home/anomozco/library.anomoz.com/profiles/data/exportData_bookings.php on line 100

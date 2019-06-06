@@ -140,7 +140,7 @@ if ($result->num_rows > 0)
               <p>Export data</p>
             </a>
           </li>
-          <<li class="nav-item">
+          <li class="nav-item">
             <a class="nav-link" href="./settings.php">
               <i class="material-icons">settings</i>
               <p>Settings</p>

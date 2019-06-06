@@ -32,17 +32,6 @@ if(isset($_POST['occupants'])&&isset($_POST['studentId'])){
         }
 }
 
-//queue booking canceled
-if(isset($_GET['cancelQueueEntry'])){
-    $id = $_GET['cancelQueueEntry'];
-
-    $sql="update lib_bookingQueue set status='cancelled' where id = '$id'";
-    
-        if(!mysqli_query($con,$sql))
-        {
-        echo"can not";
-        }
-}
 
 //sending notification
 if(isset($_GET['notfType'])&&isset($_GET['bookingId'])){
@@ -52,37 +41,80 @@ if(isset($_GET['notfType'])&&isset($_GET['bookingId'])){
     $notfSent = false;
     
     //$studentId = $_GET['studentId'];
-    $query = "SELECT * FROM lib_bookings where bookingId='$bookingId'"; 
-    $result = $con->query($query); 
-    if ($result->num_rows > 0)
-    { 
-        while($row = $result->fetch_assoc()) 
-        { 
-            $studentId = $row['studentId'];
-        }
-    }
     
-    //check if sent
-    $query = "SELECT * FROM `lib_notfStatus` n right OUTER join lib_room r on n.bookingId = r.bookingId where r.status!='free' and r.bookingId='$bookingId' and n.notfType='$notfType' order by r.room desc"; 
-    $result = $con->query($query); 
-    if ($result->num_rows > 0)
-    { 
-        while($row = $result->fetch_assoc()) 
+    
+    if($notfType!='bookingQueue'){
+        
+        $query = "SELECT * FROM lib_bookings where bookingId='$bookingId'"; 
+        $result = $con->query($query); 
+        if ($result->num_rows > 0)
         { 
-            if(($row['bookingId']==$bookingId)&&($row['notfType']==$notfType)){
-                $notfSent = true;
+            while($row = $result->fetch_assoc()) 
+            { 
+                $studentId = $row['studentId'];
+                $room = $row['room'];
             }
         }
+    
+        //check if sent
+        $query = "SELECT * FROM `lib_notfStatus` n right OUTER join lib_room r on n.bookingId = r.bookingId where r.status!='free' and r.bookingId='$bookingId' and n.notfType='$notfType' order by r.room desc"; 
+        $result = $con->query($query); 
+        if ($result->num_rows > 0)
+        { 
+            while($row = $result->fetch_assoc()) 
+            { 
+                if(($row['bookingId']==$bookingId)&&($row['notfType']==$notfType)){
+                    $notfSent = true;
+                }
+            }
+        }
+        if($notfSent==false){
+           
+            ?>
+        <script type="text/javascript">
+                console.log("sending notification");
+            </script>
+    
+        <?
+           include_once("./profiles/sendAllNotf.php"); 
+        }
     }
-    if($notfSent==false){
-       
-        ?>
-    <script type="text/javascript">
-            console.log("sending real notification");
-        </script>
-
-    <?
-       include_once("./profiles/sendAllNotf.php"); 
+    if($notfType=='bookingQueue'){
+        
+        $query = "SELECT * FROM lib_bookingQueue where id='$bookingId'"; 
+        $result = $con->query($query); 
+        if ($result->num_rows > 0)
+        { 
+            while($row = $result->fetch_assoc()) 
+            { 
+                $studentId = $row['studentId'];
+                $bookingTime = $row['bookingTime'];
+            }
+        }
+        $room = '12';
+        
+        //check if sent
+        $query = "SELECT * FROM `lib_notfStatus` n right OUTER join lib_bookingQueue b on n.bookingId = b.id where b.status='waiting' and b.id='$bookingId' and n.notfType='bookingQueue' order by b.id desc"; 
+        $result = $con->query($query); 
+        if ($result->num_rows > 0)
+        { 
+            while($row = $result->fetch_assoc()) 
+            { 
+                if(($row['bookingId']==$bookingId)&&($row['notfType']==$notfType)){
+                    $notfSent = true;
+                }
+            }
+        }
+        if($notfSent==false){
+           
+            ?>
+        <script type="text/javascript">
+                console.log("sending notification");
+            </script>
+    
+        <?
+        include_once("./profiles/sendAllNotfBookingQueue.php"); 
+        }
     }
 
 }
@@ -120,6 +152,14 @@ if ($result_makingRoomsExpire->num_rows > 0)
             {
             echo"can not";
             }
+            
+            $sql="update lib_bookings set status='expired' where room='$room'";
+        
+            if(!mysqli_query($con,$sql))
+            {
+            echo"can not";
+            }
+            
         }
     }
 }
@@ -174,11 +214,11 @@ from lib_room r inner join lib_bookings b on r.bookingId = b.bookingId where r.s
 
 //expired rooms list
 $query_expiredRoomsList = "select 
-b.bookingId, b.studentId, n.notfType, r.room, b.expiry
+b.bookingId, b.studentId, min(n.notfType) as notfType, r.room, b.expiry
 from lib_room r inner join lib_bookings b on r.bookingId = b.bookingId left outer join lib_notfStatus n on n.bookingId=b.bookingId 
-where r.status = 'expired' and ((n.notfType is null)or(n.notfType='-1min')) order by b.room desc
+where r.status = 'expired' and ((n.notfType is null)or(n.notfType='-1min')or(n.notfType='10min'))GROUP by b.bookingId order by  b.room ASC"; 
+// and ((n.notfType is null)or(n.notfType='-1min')) 
 
-"; 
 $result_expiredRoomList = $con->query($query_expiredRoomsList); 
 
 //free rooms list
@@ -197,9 +237,9 @@ $result_freeRoomListBooking = $con->query($query_freeRoomsListBooking);
 
 //waiting queue
 $query_bookingQue = "select 
-*
-from lib_bookingQueue where status='waiting' order by id asc
-"; 
+q.id, q.studentId, q.occupants, q.bookingTime, q.status, n.notfType
+from lib_bookingQueue q left outer join lib_notfStatus n on n.bookingId=q.id 
+where q.status = 'waiting' order by q.id asc"; 
 $result_bookingQue = $con->query($query_bookingQue); 
 
 
@@ -406,10 +446,14 @@ if ($result->num_rows > 0)
                             { 
                                 while($row = $result_expiredRoomList->fetch_assoc()) 
                                 { 
+
                                     ?>
                                     <script>expiryTime[<?echo $i?>] = "<?echo $row['expiry']?>"</script>
                                     <script>expiryRoom[<?echo $i?>] = "<?echo $row['room']?>"</script>
+                                
                                     <?
+                                    
+                                     if(true){
                                     echo "<tr>";
                                     echo '<td>';
                                     echo '<label id="expTime'.$row['room'].'" class="form-check-label" >
@@ -418,7 +462,7 @@ if ($result->num_rows > 0)
                                     echo "</td>";
                                     echo "<td>Room ".$row['room']."</td>";
                                     
-                                    if($row['notfType']==null){
+                                    if(($row['notfType']==null)||($row['notfType']=='10min')){
                                         echo '<td><a href="./dashboard.php?bookingId='.$row['bookingId'].'&notfType=-1min"><button class="btn btn-social btn-just-icon btn-google" style="background-color:green;"><i class="material-icons">notifications</i></button></a></td>';
 
                                     }
@@ -427,14 +471,17 @@ if ($result->num_rows > 0)
                                     }
                                     
                                     echo '<td><a href="./flagStudent.php?studentId='.$row['studentId'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:#e77b2b;"><i class="material-icons">flag</i></button></a></td>';
-                                    echo '<td><a href="./extendTimeRoom.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-twitter"><i class="material-icons">plus_one</i></button><br></a></td>';
+                                    //echo '<td><a href="./extendTimeRoom.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-twitter"><i class="material-icons">plus_one</i></button><br></a></td>';
                                     echo '<td><a href="./freeRoom.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:red;"><i class="material-icons">cancel</i></button></a></td>';
                                     
                                     echo "</tr>";
                                     $i +=1;
+                                     }
+                                     
                                 }
                             }
                           ?>
+                         
                           <tr>
                             <td>
                               <div class="form-check">
@@ -463,15 +510,19 @@ if ($result->num_rows > 0)
                                     <script>bookingRoom[<?echo $i?>] = "<?echo $row['room']?>"</script>
                                     <script>bookingBookingId[<?echo $i?>] = "<?echo $row['bookingId']?>"</script>
                                     <?
+                                    date_default_timezone_set("Asia/Karachi");
+                                    $currentDateTime = date('Y/m/d H:i:s',$row['expiry']);
+                                    $newDateTime = date('h:i A', strtotime($currentDateTime));
+
                                     echo "<tr>";
                                     echo '<td>';
                                     echo '<label id="bookTime'.$row['room'].'" class="form-check-label" >
-                                  Calculating
+                                  '.$newDateTime.'
                                 </label>';
                                     echo "</td>";
                                     echo "<td>Room ".$row['room']."</td>";
                                     echo '<td><a href="./flagStudent.php?studentId='.$row['studentId'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:#e77b2b;"><i class="material-icons">flag</i></button></a></td>';
-                                    echo '<td><a href="./extendTimeRoom.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-twitter"><i class="material-icons">plus_one</i></button><br></a></td>';
+                                    //echo '<td><a href="./extendTimeRoom.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-twitter"><i class="material-icons">plus_one</i></button><br></a></td>';
                                     echo '<td><a href="./swapCard.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-twitter"><i class="material-icons">swap_horiz</i></button></a></td>';
                                     echo '<td><a href="./freeRoom.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:red;"><i class="material-icons">cancel</i></button></a></td>';
                                     echo "</tr>";
@@ -576,7 +627,14 @@ if ($result->num_rows > 0)
                                     echo "<td>".$row['studentId']."</td>";
                                     echo "<td>".$row['occupants']."</td>";
                                     echo "<td>".substr($row['bookingTime'],-10)."</td>";
-                                    echo '<td><a href="./dashboard.php?cancelQueueEntry='.$row['id'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:red;"><i class="material-icons">cancel</i></button></a></td>';
+                                    if($row['notfType']==null){//$nFreeRooms>5){
+                                        echo '<td><a href="./dashboard.php?bookingId='.$row['id'].'&notfType=bookingQueue"><button class="btn btn-social btn-just-icon btn-google" style="background-color:orange;"><i class="material-icons">notifications</i></button></a></td>';
+                                    }
+                                    else{
+                                        echo '<td><a href="#"><button class="btn btn-social btn-just-icon btn-google" style="background-color:#babab9;"><i class="material-icons">notifications</i></button></a></td>';
+                                    }
+                                    
+                                    echo '<td><a href="./cancelQueueEntry.php?id='.$row['id'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:red;"><i class="material-icons">cancel</i></button></a></td>';
                                     echo '<td><a href="./bookRoomFromQueue.php?id='.$row['id'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:green;"><i class="material-icons">check_box</i></button></a></td>';
 
                                     echo "</tr>";
@@ -661,6 +719,7 @@ if ($result->num_rows > 0)
             try {
                 bookingId   = url.searchParams.get("bookingId");
                 notfType = url.searchParams.get("notfType");
+                queId = url.searchParams.get("queId");
             }
             catch(err) {
               console.log("no parameter");
@@ -678,8 +737,9 @@ if ($result->num_rows > 0)
                     var s = Math.floor(d % 3600 % 60);
                 
                     var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours,") : "";
-                    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes ") : "";
-                    timeInt =  hDisplay + mDisplay; 
+                    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes,") : "";
+                    var sDisplay = s > 0 ? s + (s == 1 ? " second, " : " seconds ") : "";
+                    timeInt =  hDisplay + mDisplay+sDisplay; 
     
                     document.getElementById('expTime'+expiryRoom[i]).innerHTML =timeInt+" ago."
                 }
@@ -693,11 +753,33 @@ if ($result->num_rows > 0)
                     var s = Math.floor(d % 3600 % 60);
                 
                     var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours,") : "";
-                    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes ") : "";
-                    timeInt =  hDisplay + mDisplay; 
+                    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes,") : "";
+                    var sDisplay = s > 0 ? s + (s == 1 ? " second, " : " seconds ") : "";
+                    timeInt =  hDisplay + mDisplay+sDisplay; 
                     
                     //console.log("parameter", bookingId, bookingBookingId[i], notfType);
-
+                    /**
+                    //5 min notification for queued bookings
+                    if((d<300) && (bookingId!=bookingBookingId[i]) && (notfType!='5minQueued') ){
+                        
+                        //check if notification sent
+                        var haveSent10minNotf = false;
+                        for (var j=0; j<sentNotfStatus.length; j++){
+                            console.log("-----", sentNotfStatus[j], '10min', sentNotfRoom[j], bookingRoom[i])
+                            if(sentNotfStatus[j]==='10min' &&  sentNotfRoom[j]===bookingRoom[i])
+                            haveSent10minNotf = true;
+                            
+                        }
+                        
+                        if(haveSent10minNotf==false){
+                            console.log("searchParams", queId, notfType);
+                            console.log("send 10 min notification to", bookingBookingId[i]);
+                            window.open("./dashboard.php?bookingId="+bookingBookingId[i]+"&notfType=10min","_self")
+                        }
+                        
+                    }
+                    **/
+                    
                     //10 min notification
                     if((d<600) && (bookingId!=bookingBookingId[i]) && (notfType!='10min') ){
                         
@@ -718,8 +800,9 @@ if ($result->num_rows > 0)
                         
                     }
                     //expiry notification
-                    if((d<-2) && (bookingId!=bookingBookingId[i]) && (notfType!='-1min') ){
-                        
+                    //console.log("d", d)
+                    if((d<-5) && (((bookingId!=bookingBookingId[i]) && (notfType!='-1min')) || ((bookingId==bookingBookingId[i]) && (notfType=='10min')))){
+                        console.log("yes1")
                         //check if notification sent
                         var haveSent1minNotf = false;
                         for (var j=0; j<sentNotfStatus.length; j++){
@@ -730,6 +813,7 @@ if ($result->num_rows > 0)
                         }
                         
                         if(haveSent1minNotf==false){
+                            console.log("yes2")
                             console.log("searchParams", bookingId, notfType);
                             console.log("send -1 min notification to", bookingBookingId[i]);
                             window.open("./dashboard.php?bookingId="+bookingBookingId[i]+"&notfType=-1min","_self")
@@ -737,7 +821,7 @@ if ($result->num_rows > 0)
                         
                     }
     
-                    document.getElementById('bookTime'+bookingRoom[i]).innerHTML =timeInt+" to expire."
+                    //document.getElementById('bookTime'+bookingRoom[i]).innerHTML =timeInt+" to expire."
                 }
                 var t = setTimeout(startTime, 500);
                 }

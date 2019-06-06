@@ -95,6 +95,11 @@ table#tab th, table#tab td {
             $query = $db_handle->runQuery("select * from lib_bookings order by id desc");
             if (! empty($productResult)) {
                 foreach ($productResult as $key => $value) {
+                    
+                    date_default_timezone_set("Asia/Karachi");
+                                    $currentDateTime = date('Y/m/d H:i:s',$productResult[$key]["expiry"]);
+                                    $newDateTime = date('h:i:s A', strtotime($currentDateTime));
+                                    
                     ?>
                  
                      <tr>
@@ -107,7 +112,7 @@ table#tab th, table#tab td {
                 <td><?php echo substr($productResult[$key]["dateTimeTaken"], -10) ?></td>
                 <td><?php echo $productResult[$key]["nStudents"]; ?></td>
                 <?date_default_timezone_set("Asia/Karachi");?>
-                <td><?php echo substr(date('Y/m/d H:i:s', $productResult[$key]["expiry"]), -9);?></td>
+                <td><?php echo $newDateTime;?></td>
                 <td><?php echo $productResult[$key]["purpose"]; ?></td>
                 <td><?php echo $productResult[$key]["sort1"]; ?></td>
                 <td><?php echo $productResult[$key]["sort2"]; ?></td>

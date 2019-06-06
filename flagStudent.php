@@ -35,7 +35,7 @@ else{
 }}
 
 $query_editOptions = "select 
-    * from lib_editOptions"; 
+    * from lib_editOptions where cat='flag'"; 
     $result_makingRoomsExpire = $con->query($query_editOptions);
     
 
@@ -93,7 +93,7 @@ if ($result->num_rows > 0)
 <?include_once("./phpParts/head.php");?>
 
 
-<body class="">
+<body class="" onload="showFlaggedStudents()">
   <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="assets/img/sidebar-1.jpg">
       <!--

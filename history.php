@@ -152,6 +152,9 @@ $result = $con->query($query);
                             
                             while($row = $result->fetch_assoc()) 
                             { 
+                                date_default_timezone_set("Asia/Karachi");
+                                    $currentDateTime = date('Y/m/d H:i:s',$row['expiry']);
+                                    $newDateTime = date('h:i:s A', strtotime($currentDateTime));
                                 echo"<tr>";
                                 echo "<td>".$row['id']."</td>";
                                 echo "<td>".$row['room']."</td>";
@@ -160,7 +163,7 @@ $result = $con->query($query);
                                 echo "<td>".substr($row['dateTimeTaken'],0,10)."</td>";
                                 echo "<td>".substr($row['dateTimeTaken'],-10)."</td>";
                                 date_default_timezone_set("Asia/Karachi");
-                                echo "<td>".substr(date('Y/m/d H:i:s',$row['expiry']), -9)."</td>";
+                                echo "<td>".$newDateTime."</td>";
                                 echo "<td>".$row['nStudents']."</td>";
                                 echo "<td>".$row['purpose']."</td>";
                                 echo "</tr>";
