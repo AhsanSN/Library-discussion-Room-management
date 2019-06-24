@@ -8,5 +8,5 @@
 
 Here are some screenshots of the software that is in use by the Habib University Library.
 
-![Screenshot](./screenshots/Screenshot (1302).png "Title")
+![Screenshot](screenshots/Screenshot (1302).png "Title")
 
