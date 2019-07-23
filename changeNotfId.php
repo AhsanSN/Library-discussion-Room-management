@@ -89,8 +89,16 @@ else{
       
         
         ?>
+        
+        <?php
+                if(isset($_GET['retUrl'])){
+                    $retUrl = $_GET['retUrl'];
+                }
+                ?>
+                
     <script type="text/javascript">
             document.getElementById("success").style.display = "block"
+            window.location = "<?echo $retUrl?>";
         </script>
     <?
         

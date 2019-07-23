@@ -33,6 +33,7 @@ echo"can not";
 ?>
 
 <script>
+/**
     Swal.fire({
       title: '<?echo $email_subject?>',
       html: 
@@ -48,6 +49,14 @@ window.open(
 );
 console.log('The Ok Button was clicked.');
 });
+**/
+window.open("mailto:"+"<?echo $email?>"+'?cc=&subject='+"<?echo $email_subject?>"+'&body='+"<?echo $email_body?>", '_self');
+
+window.open(
+  "https://web.whatsapp.com/send?phone=<?echo $mobile?>&text=<?echo $email_body?>",
+  '_blank' // <- This is what makes it open in a new window.
+);
+
 </script>
 
 
@@ -104,13 +113,10 @@ else{
 
 if($single==false){
     
-    for($i=0;$i<count($token);$i++){
-        ?>
-    <script>console.log("yes" )</script>
-    <?
         define( 'API_ACCESS_KEY', 'AAAAUjJH48c:APA91bEatEWDjhZvtoi_4KaPoyutmCXq4L4gW4WyAnWRstfY0-ylcNSgAe0M75j3Edy4JZAfT9auEWRAJWll2ZqckW2IRFgEX-xrm8gdorWV3n21rcmvMVQzy9zO3HOiJd3sc0kBCmlN' );
 
-        $data = array("to" => $token[$i],
+        $data = array(//"to" => $token[$i],
+        'registration_ids'  =>$token,
                       "notification" => array( "title" => "HU - Library", "body" => $notfBody ,"icon" => "./p1.jpg", "click_action" => "https://library.anomoz.com/checkStatus.php?room=".$room));                                                                    
         $data_string = json_encode($data); 
         //echo "The Json Data : ".$data_string; 
@@ -129,7 +135,7 @@ if($single==false){
         curl_close ($ch);
         //echo "<p>&nbsp;</p>";
         //echo "The Result : ".$result;
-    }
+    
 }
 
 ?>

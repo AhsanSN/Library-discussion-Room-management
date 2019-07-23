@@ -99,9 +99,12 @@ $result = $con->query($query);
                   <b>Notification turned on!</b> <span id="studentIdBox"></span>
                 </div>
                 
+                <?php
+                $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+                ?>
                 
                 <script>
-                    document.getElementById("studentIdBox").innerHTML ="<p style='font-size: 13px;'>All notifications for "+localStorage.getItem("studentId")+" will be sent to you. To change the ID associated, <a href='./changeNotfId.php' style='color: #801b00;'>click here.</a><p>"//localStorage.getItem("studentId");
+                    document.getElementById("studentIdBox").innerHTML ="<p style='font-size: 13px;'>All notifications for "+localStorage.getItem("studentId")+" will be sent to you. To change the ID associated, <a href='./changeNotfId.php?retUrl=<?echo $actual_link?>' style='color: #801b00;'>click here.</a><p>"//localStorage.getItem("studentId");
 
                     
                 </script>

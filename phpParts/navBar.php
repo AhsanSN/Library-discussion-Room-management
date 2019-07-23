@@ -22,7 +22,7 @@
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                  <a class="dropdown-item" href="#">Log out</a>
+                  <a class="dropdown-item" href="./dashboard.php?logout=true">Log out</a>
                 </div>
               </li>
             </ul>

@@ -57,7 +57,7 @@ if(isset($_GET["removeUser"])){
 if(isset($_POST["name"])&&isset($_POST["email"])&&isset($_POST["password"])){
     $name = $_POST["name"];
     $email = $_POST["email"];
-    $password = $_POST["password"];
+    $password = md5($_POST["password"]);
     
      $sql="insert into lib_users(name, email, password, role) values('$name', '$email', '$password', 'staff')";
     
@@ -69,8 +69,8 @@ if(isset($_POST["name"])&&isset($_POST["email"])&&isset($_POST["password"])){
 
 
 if(isset($_POST["oldPassword"])){
-    $newPassword = $_POST["newPassword"];
-    $oldPassword = $_POST["oldPassword"];
+    $newPassword = md5($_POST["newPassword"]);
+    $oldPassword = md5($_POST["oldPassword"]);
 
 if((!$newPassword)||(!$oldPassword)){
     $message = "Please insert both fields.";

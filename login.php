@@ -8,7 +8,7 @@
 }
 if(isset($_POST["email"])){
     $email = $_POST["email"]; 
-    $password = $_POST["password"];
+    $password = md5($_POST["password"]);
 if((!$email)||(!$password)){
     $message = "Please insert both fields.";
     } 

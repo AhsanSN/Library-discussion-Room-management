@@ -4,9 +4,16 @@
 
 <?include("./phpParts/head.php")?>
 <body class="" onload="startTime()">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 <?
+function logout() {
+    session_destroy();
+  }
+  if (isset($_GET['logout'])) {
+    logout();
+    $logged=0;
+  }
+  
 if ($logged==0){ 
     ?>
     <script type="text/javascript">
@@ -14,6 +21,59 @@ if ($logged==0){
         </script>
     <?
 }
+
+
+//free room
+
+if(isset($_GET["freeroom"])){
+    $room = $_GET["freeroom"]; 
+
+if((!$room)){
+    $message = "Please insert both fields.";
+    } 
+else{ 
+    //go
+ 
+    //update room status
+    
+    //get tracking id
+    
+    $query_makingRoomsExpire = "select 
+    r.bookingId
+    from lib_bookings b inner join lib_room r on r.bookingId = b.bookingId where r.room = '$room'
+    "; 
+    $result_makingRoomsExpire = $con->query($query_makingRoomsExpire);
+    if ($result_makingRoomsExpire->num_rows > 0)
+    { 
+        while($row = $result_makingRoomsExpire->fetch_assoc()) 
+        { 
+            $bookingId = $row['bookingId'];
+        }
+    }
+        
+        //
+    $expiry = time()-10;    
+    $sql="update lib_bookings set status='free', expiry='$expiry' where room='$room' and bookingId = '$bookingId'";
+    
+        if(!mysqli_query($con,$sql))
+        {
+        echo"can not";
+        }
+        
+        
+        $sql="update lib_room set status='free' where room='$room'";
+    
+        if(!mysqli_query($con,$sql))
+        {
+        echo"can not";
+        }
+        
+        ?>
+   
+    <?
+        
+}}
+
 
 //queue booking
 if(isset($_POST['occupants'])&&isset($_POST['studentId'])){
@@ -279,7 +339,7 @@ if ($result->num_rows > 0)
 
         Tip 2: you can also add an image using data-image tag
     -->
-      <div class="logo">
+      <div class="logo" data-toggle="tooltip" data-placement="right" title="user's name">
         <a href="./" class="simple-text logo-normal">
           <?echo $session_name."'s Panel"?>
         </a>
@@ -403,7 +463,7 @@ if ($result->num_rows > 0)
                 <div class="card-header card-header-tabs card-header-primary">
                   <div class="nav-tabs-navigation">
                     <div class="nav-tabs-wrapper">
-                      <span class="nav-tabs-title">Overview</span>
+                      <span class="nav-tabs-title" data-toggle="tooltip" data-placement="right" title="Current status of all rooms">Overview</span>
                       <ul class="nav nav-tabs" data-tabs="tabs">
                         <li class="nav-item">
                           <a class="nav-link active" href="#profile" data-toggle="tab">
@@ -463,16 +523,16 @@ if ($result->num_rows > 0)
                                     echo "<td>Room ".$row['room']."</td>";
                                     
                                     if(($row['notfType']==null)||($row['notfType']=='10min')){
-                                        echo '<td><a href="./dashboard.php?bookingId='.$row['bookingId'].'&notfType=-1min"><button class="btn btn-social btn-just-icon btn-google" style="background-color:green;"><i class="material-icons">notifications</i></button></a></td>';
+                                        echo '<td data-toggle="tooltip" data-placement="right" title="send notification"><a href="./dashboard.php?bookingId='.$row['bookingId'].'&notfType=-1min"><button class="btn btn-social btn-just-icon btn-google" style="background-color:green;"><i class="material-icons">notifications</i></button></a></td>';
 
                                     }
                                     else{
                                         echo '<td><a href="#"><button class="btn btn-social btn-just-icon btn-google" style="background-color:#babab9;"><i class="material-icons">notifications</i></button></a></td>';
                                     }
                                     
-                                    echo '<td><a href="./flagStudent.php?studentId='.$row['studentId'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:#e77b2b;"><i class="material-icons">flag</i></button></a></td>';
+                                    echo '<td data-toggle="tooltip" data-placement="right" title="place a flag on the student"><a href="./flagStudent.php?studentId='.$row['studentId'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:#e77b2b;"><i class="material-icons">flag</i></button></a></td>';
                                     //echo '<td><a href="./extendTimeRoom.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-twitter"><i class="material-icons">plus_one</i></button><br></a></td>';
-                                    echo '<td><a href="./freeRoom.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:red;"><i class="material-icons">cancel</i></button></a></td>';
+                                    echo '<td data-toggle="tooltip" data-placement="right" title="free room"><a href="?freeroom='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:red;"><i class="material-icons">cancel</i></button></a></td>';
                                     
                                     echo "</tr>";
                                     $i +=1;
@@ -521,10 +581,10 @@ if ($result->num_rows > 0)
                                 </label>';
                                     echo "</td>";
                                     echo "<td>Room ".$row['room']."</td>";
-                                    echo '<td><a href="./flagStudent.php?studentId='.$row['studentId'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:#e77b2b;"><i class="material-icons">flag</i></button></a></td>';
+                                    echo '<td data-toggle="tooltip" data-placement="right" title="place flag on the student"><a href="./flagStudent.php?studentId='.$row['studentId'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:#e77b2b;"><i class="material-icons">flag</i></button></a></td>';
                                     //echo '<td><a href="./extendTimeRoom.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-twitter"><i class="material-icons">plus_one</i></button><br></a></td>';
-                                    echo '<td><a href="./swapCard.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-twitter"><i class="material-icons">swap_horiz</i></button></a></td>';
-                                    echo '<td><a href="./freeRoom.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:red;"><i class="material-icons">cancel</i></button></a></td>';
+                                    echo '<td data-toggle="tooltip" data-placement="right" title="swap student card"><a href="./swapCard.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-twitter"><i class="material-icons">swap_horiz</i></button></a></td>';
+                                    echo '<td data-toggle="tooltip" data-placement="right" title="free room"><a href="./freeRoom.php?room='.$row['room'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:red;"><i class="material-icons">cancel</i></button></a></td>';
                                     echo "</tr>";
                                     $i+=1;
                                 }
@@ -590,7 +650,7 @@ if ($result->num_rows > 0)
                     <div class="nav-tabs-wrapper">
                       <span class="nav-tabs-title">Booking Panel</span>
                       <ul class="nav nav-tabs" data-tabs="tabs">
-                        <li class="nav-item">
+                        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="add students to the queue when all rooms are busy">
                           <a class="nav-link active" href="#bookingQueue" data-toggle="tab">
                             Queue
                             <div class="ripple-container"></div>
@@ -628,14 +688,14 @@ if ($result->num_rows > 0)
                                     echo "<td>".$row['occupants']."</td>";
                                     echo "<td>".substr($row['bookingTime'],-10)."</td>";
                                     if($row['notfType']==null){//$nFreeRooms>5){
-                                        echo '<td><a href="./dashboard.php?bookingId='.$row['id'].'&notfType=bookingQueue"><button class="btn btn-social btn-just-icon btn-google" style="background-color:orange;"><i class="material-icons">notifications</i></button></a></td>';
+                                        echo '<td data-toggle="tooltip" data-placement="right" title="send notification"><a href="./dashboard.php?bookingId='.$row['id'].'&notfType=bookingQueue"><button class="btn btn-social btn-just-icon btn-google" style="background-color:orange;"><i class="material-icons">notifications</i></button></a></td>';
                                     }
                                     else{
-                                        echo '<td><a href="#"><button class="btn btn-social btn-just-icon btn-google" style="background-color:#babab9;"><i class="material-icons">notifications</i></button></a></td>';
+                                        echo '<td data-toggle="tooltip" data-placement="right" title="notification already sent"><a href="#"><button class="btn btn-social btn-just-icon btn-google" style="background-color:#babab9;"><i class="material-icons">notifications</i></button></a></td>';
                                     }
                                     
-                                    echo '<td><a href="./cancelQueueEntry.php?id='.$row['id'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:red;"><i class="material-icons">cancel</i></button></a></td>';
-                                    echo '<td><a href="./bookRoomFromQueue.php?id='.$row['id'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:green;"><i class="material-icons">check_box</i></button></a></td>';
+                                    echo '<td data-toggle="tooltip" data-placement="right" title="remove entry from queue"><a href="./cancelQueueEntry.php?id='.$row['id'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:red;"><i class="material-icons">cancel</i></button></a></td>';
+                                    echo '<td data-toggle="tooltip" data-placement="right" title="book room for this entry"><a href="./bookRoomFromQueue.php?id='.$row['id'].'"><button class="btn btn-social btn-just-icon btn-google" style="background-color:green;"><i class="material-icons">check_box</i></button></a></td>';
 
                                     echo "</tr>";
                                 }
@@ -685,7 +745,7 @@ if ($result->num_rows > 0)
                                     echo "<tr>";
                                     echo "<td>".$row['room']."</td>";
                                     echo "<td>".$row['capacity']."</td>";
-                                    echo '<td><a href="./bookRoom.php?room='.$row['room'].'"><button class="btn btn-success btn-sm">Book!<div class="ripple-container"></div></button></a></td>';
+                                    echo '<td data-toggle="tooltip" data-placement="right" title="book room"><a href="./bookRoom.php?room='.$row['room'].'"><button class="btn btn-success btn-sm">Book!<div class="ripple-container"></div></button></a></td>';
                                     echo "</tr>";
                                 }
                             }

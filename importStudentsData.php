@@ -191,6 +191,7 @@ div#response.display-block {
 
 <body>
     <h2>Import Students Data</h2>
+    <h4><a href="./uploads/Book1-exc.xlsx">Download Sample Import file</a></h4>
     
     <div class="outer-container">
         <form action="" method="post"
@@ -201,6 +202,7 @@ div#response.display-block {
                     id="file" accept=".xls,.xlsx">
                 <button type="submit" id="submit" name="import"
                     class="btn-submit">Import</button>
+                    
         
             </div>
         
