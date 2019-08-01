@@ -37,11 +37,11 @@
                      <div class="form-row">
                         <div class="form-group col-md-6">
                           <label for="inputEmail4">Previous Student ID</label>
-                          <input id="studentIdBox" name="studentId" type="text" class="form-control" placeholder="" required readonly>
+                          <input id="studentIdBox" name="studentId" type="text" class="form-control" style="padding:5px;" placeholder="" required readonly>
                         </div>
                         <div class="form-group col-md-6">
-                          <label for="inputEmail4">New Student ID</label>
-                          <input id="studentIdBoxNew" name="studentIdNew" type="text" class="form-control" placeholder="" required>
+                          <label for="inputEmail4">New Student ID [eg. 2908]</label>
+                          <input id="studentIdBoxNew" name="studentIdNew" type="text" class="form-control" maxlength="4" placeholder="" required>
                         </div>
                        <div class="form-group col-md-6" style="display:none;">
                           <input id="token" name="token" type="text" class="form-control" placeholder="" required>

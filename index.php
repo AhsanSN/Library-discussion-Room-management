@@ -21,7 +21,7 @@ if ($logged==1){
     <title>HU - Library</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="./img/core-img/favicon.ico">
+    <link rel="icon" href="./img/logo.png">
 
     <!-- Core Stylesheet -->
     <link rel="stylesheet" href="styleHome.css">
