@@ -103,7 +103,11 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="js/uza.bundle.js"></script>
     <!-- Active js -->
     <script src="js/default-assets/active.js"></script>
-
+    <script>
+        console.log("%cBuilt and maintained by Anomoz Softwares.", "color: green; font-size:12px;");
+        console.log("%cLearn more: https://anomoz.com", "color: green; font-size:12px;");
+        
+    </script>
 </body>
 
 </html>

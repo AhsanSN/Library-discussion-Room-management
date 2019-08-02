@@ -34,7 +34,7 @@ if(!mysqli_query($con,$sql))
 echo"can not";
 }
 
-echo $email;
+//echo $email;
 ?>
 
 <script>
@@ -55,12 +55,15 @@ window.open(
 console.log('The Ok Button was clicked.');
 });
 **/
+
+/**
 window.open("mailto:"+"<?echo $email?>"+'?cc=&subject='+"<?echo $email_subject?>"+'&body='+"<?echo $email_body?>", '_self');
 
 window.open(
   "https://web.whatsapp.com/send?phone=<?echo $mobile?>&text=<?echo $email_body?>",
   '_blank' // <- This is what makes it open in a new window.
 );
+**/
 </script>
 
 

@@ -2,8 +2,9 @@
 <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-messaging.js"></script>
 <script>
-
+//console.log("token", localStorage.getItem("token"));
 function yes(){
+    document.getElementById("wait5Sec").style.display = "block";
 //localStorage.setItem('ask_notf','19');//making default
     
         console.log('Developer: Anomoz by Syed Ahsan Ahmed');
@@ -37,7 +38,9 @@ var config = {
   .then(function(currentToken) {
     console.log("token", currentToken);
     localStorage.setItem("token",currentToken);
+    localStorage.setItem("studentId","<?echo $studentId?>");
     localStorage.setItem("tokenExpiry", (new Date().getTime() / 1000)+2028000);
+    document.getElementById("studentId").value = "<?echo $studentId?>";
     document.getElementById("tokenValue").value = currentToken;
     document.getElementById("tokenForm").submit();
     //token received

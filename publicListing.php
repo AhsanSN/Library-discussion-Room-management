@@ -198,11 +198,11 @@ $.ajax({
     $this.html(result);
     timeLeft();
     if( !arraysEqual($.parseJSON(result).roomsStatusAr, roomsStatus) || !arraysEqual($.parseJSON(result).bookingQueueAr, bookingQueue) ){
-        console.log("result", $.parseJSON(result).roomsStatusAr, roomsStatus)
+        //console.log("result", $.parseJSON(result).roomsStatusAr, roomsStatus)
         window.open("./publicListing.php","_self")
     }
     sleep(1000);
-    console.log("result", $.parseJSON(result).roomsStatusAr, roomsStatus)
+    //console.log("result", $.parseJSON(result).roomsStatusAr, roomsStatus)
 
   }
 });

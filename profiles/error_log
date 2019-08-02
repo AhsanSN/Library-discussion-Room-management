@@ -670,3 +670,95 @@
 [22-Jul-2019 18:49:04 Europe/London] PHP Notice:  Undefined index: key in /home/anomozco/library.anomoz.com/profiles/sendAllNotf.php on line 110
 [22-Jul-2019 18:49:04 Europe/London] PHP Notice:  Undefined variable: notfBody in /home/anomozco/library.anomoz.com/profiles/sendAllNotf.php on line 128
 [22-Jul-2019 18:49:04 Europe/London] PHP Notice:  Undefined variable: room in /home/anomozco/library.anomoz.com/profiles/sendAllNotf.php on line 128
+[29-Jul-2019 10:18:44 Europe/London] PHP Notice:  Undefined variable: studentId in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 6
+[29-Jul-2019 10:18:44 Europe/London] PHP Notice:  Undefined variable: con in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 7
+[29-Jul-2019 10:18:44 Europe/London] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 7
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 19
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 24
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: bookingId in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 31
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 31
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: email in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 37
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: email_subject in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 43
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: email in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 45
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 46
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: mobile in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 52
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 52
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: email in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 58
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: email_subject in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 58
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 58
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: mobile in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 61
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 61
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 70
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 74
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined index: key in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 110
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: notfBody in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 128
+[29-Jul-2019 10:19:00 Europe/London] PHP Notice:  Undefined variable: room in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 128
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 19
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 24
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: bookingId in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 31
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 31
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: email in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 37
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: email_subject in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 43
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: email in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 45
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 46
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: mobile in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 52
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 52
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: email in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 58
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: email_subject in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 58
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 58
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: mobile in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 61
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 61
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 70
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 74
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined index: key in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 110
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: notfBody in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 128
+[29-Jul-2019 10:19:25 Europe/London] PHP Notice:  Undefined variable: room in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 128
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 19
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 24
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: bookingId in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 31
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 31
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: email in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 37
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: email_subject in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 43
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: email in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 45
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 46
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: mobile in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 52
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 52
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: email in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 58
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: email_subject in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 58
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 58
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: mobile in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 61
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 61
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 70
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 74
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined index: key in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 110
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: notfBody in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 128
+[29-Jul-2019 10:19:38 Europe/London] PHP Notice:  Undefined variable: room in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 128
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 19
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 24
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: bookingId in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 31
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 31
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: email in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 37
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: email_subject in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 43
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: email in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 45
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 46
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: mobile in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 52
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 52
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: email in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 60
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: email_subject in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 60
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 60
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: mobile in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 63
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: email_body in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 63
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 73
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: notfType in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 77
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined index: key in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 113
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: notfBody in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 131
+[29-Jul-2019 10:20:25 Europe/London] PHP Notice:  Undefined variable: room in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 131
+[29-Jul-2019 10:35:38 Europe/London] PHP Notice:  Undefined variable: studentId in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 6
+[29-Jul-2019 10:35:38 Europe/London] PHP Notice:  Undefined variable: con in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 7
+[29-Jul-2019 10:35:38 Europe/London] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/anomozco/hu.anomoz.com/library/profiles/sendAllNotf.php on line 7

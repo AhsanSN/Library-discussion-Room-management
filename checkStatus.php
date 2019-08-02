@@ -125,6 +125,7 @@ $result = $con->query($query);
                       <p id="bookTimeLeft">time left</p>
                         
                         <button id="onNotfBtn" onclick="yes()" class="btn btn-primary">Keep me notified!</button>
+                        <p id="wait5Sec" style="display:none;">Please wait 5 seconds. Your request is being processed.</p>
 
                     </div>
                   <?
@@ -243,12 +244,12 @@ $result = $con->query($query);
    
    
    //turn button off
-   console.log("token expiry:", (new Date().getTime() / 1000), Number(localStorage.getItem("tokenExpiry")))
+   //console.log("token expiry:", (new Date().getTime() / 1000), Number(localStorage.getItem("tokenExpiry")))
    
    if(((new Date().getTime() / 1000)<Number(localStorage.getItem("tokenExpiry")))&&(localStorage.getItem("tokenExpiry")!=null)){
        document.getElementById("onNotfBtn").style.display="none";
        document.getElementById("notfSuccess").style.display="block";
-       console.log("hide buttton");
+       //console.log("hide buttton");
    }
    else{
        document.getElementById("onNotfBtn").style.display="block";
@@ -256,7 +257,7 @@ $result = $con->query($query);
        console.log("show buttton");
    }
 
-
+//console.log("--<?echo $studentId?>")
 document.getElementById("studentId").value = "<?echo $studentId?>";
 
 
@@ -266,11 +267,12 @@ document.getElementById("studentId").value = "<?echo $studentId?>";
 //enter token
 if(isset($_POST["token"])){
  $token= $_POST["token"];
- $studentId= $_POST["studentId"];
+ //$studentId= $_POST["studentId"];
  ?>
  <script>
     document.getElementById("notfSuccess").style.display='block';
     localStorage.setItem("studentId", "<?echo $studentId?>");
+    console.log("-<?echo $studentId?>")
  </script>
  <?
     //check if entry
