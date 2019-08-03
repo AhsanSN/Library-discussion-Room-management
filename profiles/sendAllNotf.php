@@ -9,7 +9,8 @@ if ($result->num_rows > 0)
 { 
     while($row = $result->fetch_assoc()) 
     { 
-        $studentId = $row['studentId'];
+        //$studentId = $row['studentId'];
+        $studentId = $row['cardnumber'];
         $email = $row['email'];
         $mobile = $row['mobile'];
         $name = $row['firstname'];

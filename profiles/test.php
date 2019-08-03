@@ -1,6 +1,6 @@
 <?
-//include_once("../database.php");
-//$studentId = "sa02908";
+include_once("../database.php");
+$studentId = "2908";
 
 //get info
 $query = "SELECT * from lib_students where cardnumber='$studentId'"; 
@@ -9,7 +9,6 @@ if ($result->num_rows > 0)
 { 
     while($row = $result->fetch_assoc()) 
     { 
-        //$studentId = $row['studentId'];
         $studentId = $row['cardnumber'];
         $email = $row['email'];
         $mobile = $row['mobile'];
@@ -17,20 +16,25 @@ if ($result->num_rows > 0)
     }
 }
 
-if($notfType=="bookingQueue"){
-$email_subject = "Room free for booking." ;
-$email_body = "Dear ".$name.", A discussion room is about to get free in few minutes. Kindly, come to the counter to complete your booking." ;
+if($notfType=="10min"){
+$email_subject = "Room ".$room." - booking expiring" ;
+$email_body = "Dear ".$name.", Your booking for discussion room ".$room." will expire after 10 mins. Kindly, either prepare to empty the room to avoid being flagged." ;
+
+}
+if($notfType=="-1min"){
+$email_subject = "Room ".$room." - booking expired" ;
+$email_body = "Dear ".$name.", Your booking for discussion room ".$room." has expired. Kindly, empty the room to avoid being flagged." ;
 }
 
 
 //notf sent
-$sql="INSERT INTO `lib_notfStatus`(`bookingId`, `notfType`) VALUES ('$bookingId', '$notfType')";
+//$sql="INSERT INTO `lib_notfStatus`(`bookingId`, `notfType`) VALUES ('$bookingId', '$notfType')";
 if(!mysqli_query($con,$sql))
 {
 echo"can not";
 }
 
-
+//echo $email;
 ?>
 
 <script>
@@ -66,13 +70,17 @@ window.open(
 <?
 //send push notf 
 
-if($notfType=="bookingQueue"){
-$notfBody ="Dear ".$name.", A discussion room is about to get free in few minutes.. Kindly, come to the counter to complete your booking."  ;
+if($notfType=="10min"){
+$notfBody = "Your booking for discussion room ".$room." will expire after 10 mins. Kindly, either prepare to empty the room to avoid being flagged." ;
 
+}
+if($notfType=="-1min"){
+$notfBody = "Your booking for discussion room ".$room." has expired. Kindly, empty the room to avoid being flagged." ;
 }
 
 $token = array();
 //get token
+echo "hey".$studentId;
 $query = "SELECT * from lib_pushTokens where studentId='$studentId'"; 
     $result = $con->query($query); 
     if ($result->num_rows > 0)
@@ -83,7 +91,7 @@ $query = "SELECT * from lib_pushTokens where studentId='$studentId'";
         }
     }
     
-    echo count($token);
+    //echo count($token);
 
 //include("https://library.anomoz.com/profiles/notf_sender.php");
 //include("./notf_sender.php");
@@ -116,6 +124,7 @@ else{
 
 if($single==false){
     
+    
         define( 'API_ACCESS_KEY', 'AAAAUjJH48c:APA91bEatEWDjhZvtoi_4KaPoyutmCXq4L4gW4WyAnWRstfY0-ylcNSgAe0M75j3Edy4JZAfT9auEWRAJWll2ZqckW2IRFgEX-xrm8gdorWV3n21rcmvMVQzy9zO3HOiJd3sc0kBCmlN' );
 
         $data = array(//"to" => $token[$i],
@@ -136,12 +145,9 @@ if($single==false){
         curl_setopt( $ch,CURLOPT_POSTFIELDS, $data_string);                                                                  
         $result = curl_exec($ch);
         curl_close ($ch);
-        //echo "<p>&nbsp;</p>";
-        //echo "The Result : ".$result;
+        echo "<p>&nbsp;</p>";
+        echo "The Result : ".$result;
     
 }
 
 ?>
-<script>
-    var notfSent = "yes";
-</script>
